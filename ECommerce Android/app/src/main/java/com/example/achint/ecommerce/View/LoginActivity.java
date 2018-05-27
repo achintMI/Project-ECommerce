@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();
 
-                    Intent i = new Intent(LoginActivity.this,MainActivity.class);
+                    Intent i = new Intent(LoginActivity.this,NavigationActivity.class);
                     startActivity(i);
                     finish();
 

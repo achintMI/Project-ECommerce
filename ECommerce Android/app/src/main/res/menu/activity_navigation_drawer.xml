@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:checkableBehavior="single">
+        <item android:title="Electronics and Appliances">
+            <menu>
+                <item
+                    android:id="@+id/appliances"
+                    android:icon="@drawable/ic_mobile"
+                    android:title="Mobile/Tablet" />
+                <item
+                    android:id="@+id/headphones"
+                    android:icon="@drawable/ic_headphones"
+                    android:title="Headphones" />
+                <item
+                    android:id="@+id/television"
+                    android:icon="@drawable/ic_tv"
+                    android:title="Television" />
+                <item
+                    android:id="@+id/ac"
+                    android:icon="@drawable/ic_ac"
+                    android:title="Airconditioner" />
+            </menu>
+        </item>
+
+        <item android:title="Men's Fashion">
+            <menu>
+                <item
+                    android:id="@+id/mclothing"
+                    android:icon="@drawable/ic_mclothes"
+                    android:title="Clothing" />
+                <item
+                    android:id="@+id/mshoes"
+                    android:icon="@drawable/ic_mshoes"
+                    android:title="Shoes" />
+            </menu>
+        </item>
+
+        <item android:title="Women's Fashion">
+            <menu>
+                <item
+                    android:id="@+id/wclothing"
+                    android:icon="@drawable/ic_dress"
+                    android:title="Clothing" />
+                <item
+                    android:id="@+id/wshoes"
+                    android:icon="@drawable/ic_wshoes"
+                    android:title="Shoes" />
+            </menu>
+        </item>
+
+        <item android:title="EasyBuy">
+            <menu>
+                <item
+                    android:id="@+id/about"
+                    android:icon="@drawable/ic_about_us"
+                    android:title="About us" />
+            </menu>
+        </item>
+
+        <item
+            android:id="@+id/myAccount"
+            android:title="My Account">
+            <menu>
+                <item
+                    android:id="@+id/profile"
+                    android:icon="@drawable/ic_profile"
+                    android:title="Profile" />
+                <item
+                    android:id="@+id/order_history"
+                    android:icon="@drawable/ic_order_history"
+                    android:title="Order History" />
+            </menu>
+        </item>
+        <item
+            android:id="@+id/sign_out"
+            android:icon="@drawable/ic_logout"
+            android:title="Logout" />
+    </group>
+</menu>

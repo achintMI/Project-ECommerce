@@ -13,6 +13,7 @@ import com.example.achint.ecommerce.Controller.MainController;
 import com.example.achint.ecommerce.Interface.UsersInterface;
 import com.example.achint.ecommerce.Model.Users;
 import com.example.achint.ecommerce.R;
+import com.example.achint.ecommerce.Sessions.AlertDialogManager;
 import com.example.achint.ecommerce.Sessions.SessionManagement;
 
 
@@ -23,6 +24,7 @@ import retrofit2.Response;
 public class SignupActivity extends AppCompatActivity {
     UsersInterface usersInterface;
     SessionManagement session;
+    AlertDialogManager alert = new AlertDialogManager();
 
     private void addUser(Users users){
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -36,9 +38,10 @@ public class SignupActivity extends AppCompatActivity {
                     Users userInResponse = response.body();
                     session = new SessionManagement(getApplicationContext());
                     session.createLoginSession(userInResponse.getFirstname(), userInResponse.getEmail());
-                    Toast.makeText(SignupActivity.this,"registered successfully :)",Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignupActivity.this,"registered successfully:)",Toast.LENGTH_LONG).show();
+                    alert.showAlertDialog(SignupActivity.this, "Successful SignUp, verify your email for login.", "Welcome to Easy Buy", true);
                     progressDialog.dismiss();
-                    Intent i = new Intent(SignupActivity.this,MainActivity.class);
+                    Intent i = new Intent(SignupActivity.this,NavigationActivity.class);
                     startActivity(i);
                     finish();
 
@@ -48,6 +51,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Users> call, Throwable t) {
                 Toast.makeText(SignupActivity.this,"registration failed :(",Toast.LENGTH_LONG).show();
+                alert.showAlertDialog(SignupActivity.this, "SignUp Failed", "Please try again..", false);
                 progressDialog.dismiss();
             }
     });
