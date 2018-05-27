@@ -40,7 +40,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final ProductData product  = mProducts.get(position);
-        holder.productName.setText("Name: "+product.getProductName());
+        holder.productName.setText(product.getProductName());
+        holder.productPrice.setText("Rs." + product.getProductPrice());
         holder.productImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +58,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 mContext.startActivity(productDetails);
             }
         });
-        Glide.with(holder.productImage.getContext()).load("https://images.pexels.com/photos/19090/pexels-photo.jpg?cs=srgb&dl=fashion-footwear-shoes-19090.jpg").into(holder.productImage);
+        Glide.with(holder.productImage.getContext()).load("https://images-na.ssl-images-amazon.com/images/I/813nc1HONgL._UL1500_.jpg").into(holder.productImage);
 
     }
 
@@ -69,9 +70,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView productName;
         ImageView productImage;
+        TextView productPrice;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            productPrice = itemView.findViewById(R.id.product_price);
             productImage = itemView.findViewById(R.id.product_image);
             productName = itemView.findViewById(R.id.product_name);
         }

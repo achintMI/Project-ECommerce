@@ -44,7 +44,7 @@ public class HomeActivity extends AppCompatActivity implements ProductAdapter.IA
         productRecycler.setLayoutManager(new GridLayoutManager(this, 2));
         productRecycler.setAdapter(productAdapter);
 
-        productApi = MainController.getInstance().getClientForProducts("http://10.177.1.250:8081/products/").create(ProductInteface.class);
+        productApi = MainController.getInstance().getClientForProducts().create(ProductInteface.class);
         getAllProductDetails();
 
     }

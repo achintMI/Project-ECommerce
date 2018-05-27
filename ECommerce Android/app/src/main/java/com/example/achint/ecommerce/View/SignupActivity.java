@@ -35,7 +35,7 @@ public class SignupActivity extends AppCompatActivity {
                 if (response.code() == 200) {
                     Users userInResponse = response.body();
                     session = new SessionManagement(getApplicationContext());
-                    session.createLoginSession(userInResponse.getFirstname(), userInResponse.getEmail());
+                    session.createLoginSession(userInResponse.getFirstname(), userInResponse.getEmail(), String.valueOf(userInResponse.getUserId()));
                     Toast.makeText(SignupActivity.this,"registered successfully :)",Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();
                     Intent i = new Intent(SignupActivity.this,MainActivity.class);

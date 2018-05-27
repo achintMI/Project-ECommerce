@@ -20,8 +20,10 @@ import com.example.achint.ecommerce.Controller.MainController;
 import com.example.achint.ecommerce.Interface.OrderInterface;
 import com.example.achint.ecommerce.Model.OrderModel;
 import com.example.achint.ecommerce.R;
+import com.example.achint.ecommerce.Sessions.SessionManagement;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,6 +41,7 @@ public class ProductActivity extends AppCompatActivity {
     private String pId;
     private String merchantId;
     private int pCost;
+    SessionManagement session;
 
 
     @Override
@@ -76,25 +79,37 @@ public class ProductActivity extends AppCompatActivity {
         buyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrderInterface orderApi = MainController.getInstance().getClientForOrder("http://10.177.1.250:8080/orders/").create(OrderInterface.class);
-                final ProgressDialog progressDialog = new ProgressDialog(ProductActivity.this);
-                progressDialog.show();
-                Call<OrderModel> call = orderApi.placeOrder("abc@gmail.com", "url", pId, "1", merchantId, pCost);
-                call.enqueue(new Callback<OrderModel>() {
-                    @Override
-                    public void onResponse(Call<OrderModel> call, Response<OrderModel> response) {
-                        if (200 == response.code()) {
-                            progressDialog.dismiss();
-                            Toast.makeText(ProductActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                session = new SessionManagement(getApplicationContext());
+                System.out.println(session.isLoggedIn());
+                if(session.isLoggedIn()){
+                    HashMap<String, String> user = session.getUserDetails();
+                    String userEmail = user.get(SessionManagement.KEY_EMAIL);
 
-                    @Override
-                    public void onFailure(Call<OrderModel> call, Throwable t) {
-                        progressDialog.dismiss();
-                        Toast.makeText(ProductActivity.this, "Please try again.", Toast.LENGTH_LONG).show();
-                    }
-                });
+
+                    OrderInterface orderApi = MainController.getInstance().getClientForOrder().create(OrderInterface.class);
+                    final ProgressDialog progressDialog = new ProgressDialog(ProductActivity.this);
+                    progressDialog.show();
+                    Call<OrderModel> call = orderApi.placeOrder(userEmail, "url", pId, "1", merchantId, pCost);
+                    call.enqueue(new Callback<OrderModel>() {
+                        @Override
+                        public void onResponse(Call<OrderModel> call, Response<OrderModel> response) {
+                            if (200 == response.code()) {
+                                progressDialog.dismiss();
+                                Toast.makeText(ProductActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<OrderModel> call, Throwable t) {
+                            progressDialog.dismiss();
+                            Toast.makeText(ProductActivity.this, "Please try again.", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }else{
+                    Intent loginIntent = new Intent(ProductActivity.this, LoginActivity.class);
+                    startActivity(loginIntent);
+                    finish();
+                }
             }
         });
 
@@ -104,7 +119,7 @@ public class ProductActivity extends AppCompatActivity {
                 Intent cartIntent = new Intent(ProductActivity.this, CartActivity.class);
                 cartIntent.putExtra("productId", pId);
                 cartIntent.putExtra("productQuantity", pQuantity);
-                cartIntent.putExtra("productUser", "Achint");
+                cartIntent.putExtra("productUser", "1");
                 startActivity(cartIntent);
             }
         });

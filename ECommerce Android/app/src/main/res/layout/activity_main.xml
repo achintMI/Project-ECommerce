@@ -15,52 +15,78 @@
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    <Button
-        android:id="@+id/product_page"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Product Page"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/order_history"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Order history"
-        />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/home_img_1"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/product_page"
+                android:text="products"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/order_history"
+                android:text="orders"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cart_details"
+                android:text="cart"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>
+
+
 
     <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="#ffffff"-->
-        <!--android:orientation="vertical"-->
-        <!--android:padding="20dp">-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:background="#ffffff"-->
+    <!--android:orientation="vertical"-->
+    <!--android:padding="20dp">-->
 
-        <!--<TextView-->
-            <!--android:id="@+id/lblName"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:singleLine="true"-->
-            <!--android:layout_marginTop="40dip"-->
-            <!--android:layout_marginBottom="10dip"/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/lblName"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:singleLine="true"-->
+    <!--android:layout_marginTop="40dip"-->
+    <!--android:layout_marginBottom="10dip"/>-->
 
-        <!--&lt;!&ndash; Email Label &ndash;&gt;-->
-        <!--<TextView-->
-            <!--android:id="@+id/lblEmail"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:singleLine="true"-->
-            <!--android:layout_marginBottom="40dip"/>-->
+    <!--&lt;!&ndash; Email Label &ndash;&gt;-->
+    <!--<TextView-->
+    <!--android:id="@+id/lblEmail"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:singleLine="true"-->
+    <!--android:layout_marginBottom="40dip"/>-->
 
-        <!--&lt;!&ndash; Button to show session data &ndash;&gt;-->
-        <!--<Button android:id="@+id/btnLogout"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:text="LogOut"-->
-            <!--android:textColor="#ebbbc5"-->
-            <!--android:background="#000000"-->
-            <!--android:layout_marginTop="25dp"-->
-            <!--android:padding="10dp"/>-->
+    <!--&lt;!&ndash; Button to show session data &ndash;&gt;-->
+    <!--<Button android:id="@+id/btnLogout"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:text="LogOut"-->
+    <!--android:textColor="#ebbbc5"-->
+    <!--android:background="#000000"-->
+    <!--android:layout_marginTop="25dp"-->
+    <!--android:padding="10dp"/>-->
 
     <!--</LinearLayout>-->
-</LinearLayout>

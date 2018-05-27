@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<Users> call, Response<Users> response) {
                 if (200 == response.code()) {
                     Users userInResponse = response.body();
-                    session.createLoginSession(userInResponse.getFirstname(), userInResponse.getEmail());
+                    session.createLoginSession(userInResponse.getFirstname(), userInResponse.getEmail(), String.valueOf(userInResponse.getUserId()));
 
                     Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();

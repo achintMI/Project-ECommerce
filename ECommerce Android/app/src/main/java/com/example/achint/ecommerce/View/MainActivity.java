@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.achint.ecommerce.Controller.MainController;
 import com.example.achint.ecommerce.R;
 import com.example.achint.ecommerce.Sessions.AlertDialogManager;
 import com.example.achint.ecommerce.Sessions.SessionManagement;
@@ -35,6 +36,16 @@ public class MainActivity extends AppCompatActivity {
 
         Button product = findViewById(R.id.product_page);
         Button order = findViewById(R.id.order_history);
+        Button cart = findViewById(R.id.cart_details);
+
+
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cartIntent = new Intent(MainActivity.this, CartActivity.class);
+                startActivity(cartIntent);
+            }
+        });
 
         product.setOnClickListener(new View.OnClickListener() {
             @Override

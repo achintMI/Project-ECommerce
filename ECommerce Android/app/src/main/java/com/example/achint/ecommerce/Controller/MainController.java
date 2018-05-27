@@ -13,6 +13,12 @@ public class MainController extends Application{
     private static Retrofit retrofitForLogin = null;
     public static MainController mInstance;
 
+    private static final String cartUrl = "http://10.177.1.139:8080/cart/";
+    private static final String productUrl = "http://10.177.1.250:8081/products/";
+    private static final String orderUrl = "http://10.177.1.250:8080/orders/";
+    private static final String loginUrl = "http://10.177.2.78:8080/easybuy/";
+
+
 
     @Override
     public void onCreate() {
@@ -24,12 +30,12 @@ public class MainController extends Application{
         return mInstance;
     }
 
-    public Retrofit getClientForOrder(String url) {
+    public Retrofit getClientForOrder() {
         if (null == retrofitForOrder) {
             OkHttpClient client = new OkHttpClient.Builder().build();
 
             retrofitForOrder = new Retrofit.Builder()
-                    .baseUrl(url)
+                    .baseUrl(orderUrl)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();
@@ -37,12 +43,12 @@ public class MainController extends Application{
         return retrofitForOrder;
     }
 
-    public Retrofit getClientForProducts(String url) {
+    public Retrofit getClientForProducts() {
         if (null == retrofitForProducts) {
             OkHttpClient client = new OkHttpClient.Builder().build();
 
             retrofitForProducts = new Retrofit.Builder()
-                    .baseUrl(url)
+                    .baseUrl(productUrl)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();
@@ -56,7 +62,21 @@ public class MainController extends Application{
                     .build();
 
             retrofitForLogin = new Retrofit.Builder()
-                    .baseUrl("http://10.177.2.78:8080/easybuy/")
+                    .baseUrl(loginUrl)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(client)
+                    .build();
+        }
+        return retrofitForLogin;
+    }
+
+    public Retrofit getClientForCart() {
+        if (null == retrofitForLogin) {
+            OkHttpClient client = new OkHttpClient.Builder().retryOnConnectionFailure(true)
+                    .build();
+
+            retrofitForLogin = new Retrofit.Builder()
+                    .baseUrl(cartUrl)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();

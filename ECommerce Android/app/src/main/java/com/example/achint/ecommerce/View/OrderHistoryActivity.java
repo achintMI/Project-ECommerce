@@ -12,9 +12,11 @@ import com.example.achint.ecommerce.Controller.MainController;
 import com.example.achint.ecommerce.Interface.OrderInterface;
 import com.example.achint.ecommerce.Model.OrderModel;
 import com.example.achint.ecommerce.R;
+import com.example.achint.ecommerce.Sessions.SessionManagement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -27,6 +29,8 @@ public class OrderHistoryActivity extends AppCompatActivity implements OrderAdap
     private RecyclerView orderRecycler;
     private List<OrderModel> orderList = new ArrayList<>();
     private OrderAdapter orderAdapter;
+    SessionManagement session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,14 +42,18 @@ public class OrderHistoryActivity extends AppCompatActivity implements OrderAdap
         orderRecycler.setLayoutManager(new LinearLayoutManager(OrderHistoryActivity.this, LinearLayoutManager.VERTICAL, false));
         orderRecycler.setAdapter(orderAdapter);
 
-        orderApi = MainController.getInstance().getClientForOrder("http://10.177.1.250:8080/orders/").create(OrderInterface.class);
+        orderApi = MainController.getInstance().getClientForOrder().create(OrderInterface.class);
         getAllOrderHistory();
     }
 
     public void getAllOrderHistory() {
+
+        HashMap<String, String> user = session.getUserDetails();
+        String userId = user.get(SessionManagement.KEY_ID);
+
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.show();
-        Call<OrderModel[]> call = orderApi.getCartHistory("1");
+        Call<OrderModel[]> call = orderApi.getCartHistory(userId);
         call.enqueue(new Callback<OrderModel[]>() {
             @Override
             public void onResponse(Call<OrderModel[]> call, Response<OrderModel[]> response) {
