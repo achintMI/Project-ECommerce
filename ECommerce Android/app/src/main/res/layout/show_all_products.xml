@@ -8,8 +8,41 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Easy Buy"
+            android:textStyle="bold"
+            android:fontFamily="cursive"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <EditText
+                android:id="@+id/search_text"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/search_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_search" />
+            <Button
+                android:id="@+id/login_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_login"
+                android:layout_marginLeft="5dp"/>
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
 
     <android.support.v7.widget.RecyclerView
         android:layout_marginTop="60dp"

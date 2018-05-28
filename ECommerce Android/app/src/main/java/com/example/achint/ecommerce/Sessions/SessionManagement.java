@@ -3,8 +3,10 @@ package com.example.achint.ecommerce.Sessions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import com.example.achint.ecommerce.View.LoginActivity;
+import com.example.achint.ecommerce.View.NavigationActivity;
 
 import java.util.HashMap;
 
@@ -90,7 +92,6 @@ public class SessionManagement {
             // Staring Login Activity
             _context.startActivity(i);
         }
-
     }
 
     public boolean isLoggedIn() {

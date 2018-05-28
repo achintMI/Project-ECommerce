@@ -61,6 +61,14 @@ public class Product {
 
     }
 
+    public String getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
+    }
+
     public int getProductRating() {
         return productRating;
     }

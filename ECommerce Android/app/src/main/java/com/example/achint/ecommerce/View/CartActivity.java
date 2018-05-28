@@ -15,9 +15,11 @@ import android.widget.Toast;
 
 import com.example.achint.ecommerce.Adapter.CartAdapter;
 import com.example.achint.ecommerce.Model.Product;
+import com.example.achint.ecommerce.Sessions.SessionManagement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -38,11 +40,9 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.IAdap
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_cart);
 
-        Intent i =getIntent();
-        //userId = i.getStringExtra("productUser");
-
+        Bundle intent = getIntent().getExtras();
+        userId = intent.getString("userId");
         mRecyclerView = findViewById(R.id.rv_cart_product_list);
-
         mCartAdapter = new CartAdapter(mProductList, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager((this)));
         mRecyclerView.setAdapter(mCartAdapter);
@@ -52,26 +52,25 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.IAdap
 
     }
 
-
-
     private void listCartItems()
     {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.show();
-        Call< Product[]> call = mIProductApi.cartListItems("555");
+        Call< Product[]> call = mIProductApi.cartListItems(userId);
         call.enqueue(new Callback<Product[]>() {
             @Override
             public void onResponse(Call<Product[]> call, Response<Product[]> response) {
                 if (response.code() == 200) {
                     mProductList.addAll(Arrays.asList(response.body()));
                     mCartAdapter.notifyDataSetChanged();
+                    Toast.makeText(CartActivity.this, "Removed from Cart", Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();
                 }
             }
             @Override
             public void onFailure(Call<Product[]> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(CartActivity.this, "Failed to Show Cart", Toast.LENGTH_LONG);
+                Toast.makeText(CartActivity.this, "Failed to Show Cart", Toast.LENGTH_LONG).show();
             }
 
         });

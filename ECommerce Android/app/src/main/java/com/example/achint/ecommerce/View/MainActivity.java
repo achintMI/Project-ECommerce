@@ -1,42 +1,62 @@
 package com.example.achint.ecommerce.View;
-
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.achint.ecommerce.Controller.MainController;
 import com.example.achint.ecommerce.R;
-import com.example.achint.ecommerce.Sessions.AlertDialogManager;
-import com.example.achint.ecommerce.Sessions.SessionManagement;
-
-import java.util.HashMap;
-
 
 public class MainActivity extends AppCompatActivity {
-    Button bt_signup;
-    AlertDialogManager alert = new AlertDialogManager();
-    SessionManagement session;
-    Button btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+        startActivity(homeIntent);
+        finish();
 
         Button product = findViewById(R.id.product_page);
         Button order = findViewById(R.id.order_history);
         Button cart = findViewById(R.id.cart_details);
+        Button search = findViewById(R.id.search_btn);
+        Button popup = findViewById(R.id.popup);
+
+        popup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog fbDialogue = new Dialog(MainActivity.this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
+                fbDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
+                fbDialogue.setContentView(R.layout.activity_category);
+                fbDialogue.setCancelable(true);
+                fbDialogue.show();
+            }
+        });
+
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText editText = findViewById(R.id.search_text);
+                String text = editText.getText().toString();
+                Intent searchIntent = new Intent(MainActivity.this, SearchActivity.class);
+                searchIntent.putExtra("searchQuery", text);
+                startActivity(searchIntent);
+                finish();
+            }
+        });
 
 
         cart.setOnClickListener(new View.OnClickListener() {
@@ -63,35 +83,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        session = new SessionManagement(getApplicationContext());
-//
-//        TextView lblName = (TextView) findViewById(R.id.lblName);
-//        TextView lblEmail = (TextView) findViewById(R.id.lblEmail);
-//        btnLogout = (Button) findViewById(R.id.btnLogout);
-//
-//        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
-//
-//        session.checkLogin();
-//
-//        HashMap<String, String> user = session.getUserDetails();
-//
-//        String name = user.get(SessionManagement.KEY_NAME);
-//        String email = user.get(SessionManagement.KEY_EMAIL);
-//
-//        lblName.setText(Html.fromHtml("Name: <b>" + name + "</b>"));
-//        lblEmail.setText(Html.fromHtml("Email: <b>" + email + "</b>"));
-//
-//        btnLogout.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View arg0) {
-//                // Clear the session data
-//                // This will clear all session data and
-//                // redirect user to LoginActivity
-//                session.logoutUser();
-//            }
-//        });
-
     }
 
     @Override
@@ -102,7 +93,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.cat:
+                Intent categoryIntent = new Intent(MainActivity.this, CategoryActivity.class);
+                startActivity(categoryIntent);
+                return true;
+        }
         return super.onOptionsItemSelected(item);
-
     }
 }

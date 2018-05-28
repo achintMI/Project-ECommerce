@@ -1,4 +1,5 @@
 package com.ecommerce.ECommerce.Model;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -7,8 +8,9 @@ import javax.validation.constraints.NotNull;
 @Table(name="users")
 public class UserModel {
     @Id
-    @GeneratedValue
-    private long user_id;
+    @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    private String id;
     @NotNull
     private String firstname;
     private String lastname;
@@ -32,6 +34,14 @@ public class UserModel {
     }
 
     public UserModel(){}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getFirstname() {
         return firstname;

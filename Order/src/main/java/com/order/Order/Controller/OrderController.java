@@ -49,7 +49,7 @@ public class OrderController {
         orderInterface.addProductToCart(orderDto);
         mailSender.setMail(emailUser);
         productsApiCall.changeProductCount(productId);
-        return null;
+        return orderDto;
     }
 
     @RequestMapping("order-history")

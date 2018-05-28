@@ -29,37 +29,6 @@ public class LoginActivity extends AppCompatActivity {
     AlertDialogManager alert = new AlertDialogManager();
     SessionManagement session;
 
-    private void loginUser(Users users){
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.show();
-
-        Call<Users> call = usersInterface.validateUser(users);
-        call.enqueue(new Callback<Users>() {
-            @Override
-            public void onResponse(Call<Users> call, Response<Users> response) {
-                if (200 == response.code()) {
-                    Users userInResponse = response.body();
-                    session.createLoginSession(userInResponse.getFirstname(), userInResponse.getEmail(), String.valueOf(userInResponse.getUserId()));
-
-                    Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_LONG).show();
-                    progressDialog.dismiss();
-
-                    Intent i = new Intent(LoginActivity.this,MainActivity.class);
-                    startActivity(i);
-                    finish();
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Users> call, Throwable t) {
-                progressDialog.dismiss();
-                alert.showAlertDialog(LoginActivity.this, "Login failed..", "Username/Password is incorrect", false);
-                Toast.makeText(LoginActivity.this, "Failed to login", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,9 +37,7 @@ public class LoginActivity extends AppCompatActivity {
 
         etEmail = findViewById(R.id.et_lemail);
         etPassword = findViewById(R.id.et_lpassword);
-
         Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
-
         login = findViewById(R.id.bt_login);
         register = findViewById(R.id.bt_register);
 
@@ -103,6 +70,37 @@ public class LoginActivity extends AppCompatActivity {
 
             }
 
+        });
+    }
+
+    private void loginUser(Users users){
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
+
+        Call<Users> call = usersInterface.validateUser(users);
+        call.enqueue(new Callback<Users>() {
+            @Override
+            public void onResponse(Call<Users> call, Response<Users> response) {
+                if (200 == response.code()) {
+                    Users userInResponse = response.body();
+                    session.createLoginSession(userInResponse.getFirstname(), userInResponse.getEmail(), userInResponse.getId());
+
+                    Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_LONG).show();
+                    progressDialog.dismiss();
+
+                    Intent i = new Intent(LoginActivity.this,HomeActivity.class);
+                    startActivity(i);
+                    finish();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Users> call, Throwable t) {
+                progressDialog.dismiss();
+                alert.showAlertDialog(LoginActivity.this, "Login failed..", "Username/Password is incorrect", false);
+                Toast.makeText(LoginActivity.this, "Failed to login", Toast.LENGTH_LONG).show();
+            }
         });
     }
 

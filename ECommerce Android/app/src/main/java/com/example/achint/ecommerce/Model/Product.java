@@ -11,46 +11,26 @@ public class Product {
     @SerializedName("productId")
     private String productId;
 
-    @SerializedName("productPrice")
-    private String productPrice;
-
     @SerializedName("productQuantity")
     private int productQuantity;
-
-    @SerializedName("productImageURL")
-    private String productImageURL;
 
     @SerializedName("userId")
     private String userId;
 
+    @SerializedName("imageUrl")
+    private String imageUrl;
 
-    public Product(String productName, String productId, String productPrice, int productQuantity, String productImageURL) {
+    @SerializedName("productCost")
+    private double productCost;
+
+
+    public Product(String productName, String productId, int productQuantity, String userId, String imageUrl, double productCost) {
         this.productName = productName;
         this.productId = productId;
-        this.productPrice = productPrice;
         this.productQuantity = productQuantity;
-        this.productImageURL = productImageURL;
-    }
-
-    public Product() {
-    }
-
-    public Product(String productName, String productId, String productPrice, int productQuantity, String productImageURL, String userId) {
-        this.productName = productName;
-        this.productId = productId;
-        this.productPrice = productPrice;
-        this.productQuantity = productQuantity;
-        this.productImageURL = productImageURL;
         this.userId = userId;
-    }
-
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+        this.imageUrl = imageUrl;
+        this.productCost = productCost;
     }
 
     public String getProductName() {
@@ -69,14 +49,6 @@ public class Product {
         this.productId = productId;
     }
 
-    public String getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductPrice(String productPrice) {
-        this.productPrice = productPrice;
-    }
-
     public int getProductQuantity() {
         return productQuantity;
     }
@@ -85,24 +57,27 @@ public class Product {
         this.productQuantity = productQuantity;
     }
 
-    public String getProductImageURL() {
-        return productImageURL;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setProductImageURL(String productImageURL) {
-        this.productImageURL = productImageURL;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "productName='" + productName + '\'' +
-                ", productId='" + productId + '\'' +
-                ", productPrice='" + productPrice + '\'' +
-                ", productQuantity=" + productQuantity +
-                ", productImageURL='" + productImageURL + '\'' +
-                ", userId='" + userId + '\'' +
-                '}';
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public double getProductCost() {
+        return productCost;
+    }
+
+    public void setProductCost(double productCost) {
+        this.productCost = productCost;
     }
 }

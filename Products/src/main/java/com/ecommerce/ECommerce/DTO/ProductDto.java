@@ -15,6 +15,17 @@ public class ProductDto {
     private int productRating;
     private boolean isIndexed;
     private String merchantId;
+    private String productImageUrl;
+
+
+
+    public String getProductImageUrl() {
+        return productImageUrl;
+    }
+
+    public void setProductImageUrl(String productUrl) {
+        this.productImageUrl = productUrl;
+    }
 
     public String getMerchantId() {
         return merchantId;

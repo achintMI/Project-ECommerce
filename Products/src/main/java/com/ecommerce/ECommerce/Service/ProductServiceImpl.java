@@ -1,12 +1,15 @@
 package com.ecommerce.ECommerce.Service;
 
+import com.ecommerce.ECommerce.ApiCall.SearchApiCall;
 import com.ecommerce.ECommerce.DTO.ProductDto;
+import com.ecommerce.ECommerce.DTO.ProductSearchDto;
 import com.ecommerce.ECommerce.Model.Product;
 import com.ecommerce.ECommerce.Repository.ProductRepositoryInterface;
 import com.mongodb.MongoClient;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -28,11 +31,17 @@ public class ProductServiceImpl  implements ProductServiceInterface{
     @Autowired
     MongoOperations mongoOperations;
 
+    @Autowired
+    @Qualifier("searchapi")
+    public SearchApiCall productsApiCall;
+
     @Override
     public String createProduct(ProductDto product){
         Product productClass = new Product();
         BeanUtils.copyProperties(product, productClass);
         productRepository.save(productClass);
+        ProductSearchDto productSearchDto = new ProductSearchDto(product);
+        productsApiCall.addNewProduct(productSearchDto);
         return "Success";
     }
 

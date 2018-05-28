@@ -1,6 +1,7 @@
 package com.example.achint.ecommerce.View;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -47,30 +48,37 @@ public class OrderHistoryActivity extends AppCompatActivity implements OrderAdap
     }
 
     public void getAllOrderHistory() {
+        SessionManagement session = new SessionManagement(getApplicationContext());
+        if(session.isLoggedIn()) {
+            HashMap<String, String> user = session.getUserDetails();
+            String userEmail = user.get(SessionManagement.KEY_EMAIL);
+            String userId = user.get(SessionManagement.KEY_ID);
 
-        HashMap<String, String> user = session.getUserDetails();
-        String userId = user.get(SessionManagement.KEY_ID);
-
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.show();
-        Call<OrderModel[]> call = orderApi.getCartHistory(userId);
-        call.enqueue(new Callback<OrderModel[]>() {
-            @Override
-            public void onResponse(Call<OrderModel[]> call, Response<OrderModel[]> response) {
-                if (200 == response.code()) {
-                    orderList.addAll(Arrays.asList(response.body()));
-                    orderAdapter.notifyDataSetChanged();
-                    progressDialog.dismiss();
-                    Toast.makeText(OrderHistoryActivity.this, "Worked", Toast.LENGTH_SHORT).show();
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.show();
+            Call<OrderModel[]> call = orderApi.getCartHistory(userId);
+            call.enqueue(new Callback<OrderModel[]>() {
+                @Override
+                public void onResponse(Call<OrderModel[]> call, Response<OrderModel[]> response) {
+                    if (200 == response.code()) {
+                        orderList.addAll(Arrays.asList(response.body()));
+                        orderAdapter.notifyDataSetChanged();
+                        progressDialog.dismiss();
+                        Toast.makeText(OrderHistoryActivity.this, "Worked", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<OrderModel[]> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(OrderHistoryActivity.this, "Failed to fetch", Toast.LENGTH_LONG).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<OrderModel[]> call, Throwable t) {
+                    progressDialog.dismiss();
+                    Toast.makeText(OrderHistoryActivity.this, "Failed to fetch", Toast.LENGTH_LONG).show();
+                }
+            });
+        }else{
+            Intent loginIntent = new Intent(OrderHistoryActivity.this, LoginActivity.class);
+            startActivity(loginIntent);
+            finish();
+        }
     }
 
     @Override

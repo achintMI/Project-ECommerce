@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.achint.ecommerce.Model.ProductData;
@@ -42,23 +43,28 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         final ProductData product  = mProducts.get(position);
         holder.productName.setText(product.getProductName());
         holder.productPrice.setText("Rs." + product.getProductPrice());
-        holder.productImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               //  Toast.makeText(mContext, "position clicked" + product.getProductName(), Toast.LENGTH_SHORT).show();
-                Intent productDetails = new Intent(mContext, ProductActivity.class);
-                productDetails.putExtra("productName", product.getProductName());
-                productDetails.putExtra("productId", product.getProductId());
-                productDetails.putExtra("productImage", product.getProductImageUrl());
-                productDetails.putExtra("productPrice", product.getProductPrice());
-                productDetails.putExtra("productDesc", product.getProductDescription());
-                productDetails.putExtra("productRating", product.getMerchantRating());
-                productDetails.putExtra("productQuantity", product.getUnitStock());
-                productDetails.putExtra("merchantId", product.getMerchantId());
-                mContext.startActivity(productDetails);
-            }
-        });
-        Glide.with(holder.productImage.getContext()).load("https://images-na.ssl-images-amazon.com/images/I/813nc1HONgL._UL1500_.jpg").into(holder.productImage);
+        if(product.getUnitStock()<=0){
+            Toast.makeText(mContext, "Out of Stock", Toast.LENGTH_LONG).show();
+        }else {
+            holder.productImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //  Toast.makeText(mContext, "position clicked" + product.getProductName(), Toast.LENGTH_SHORT).show();
+                    Intent productDetails = new Intent(mContext, ProductActivity.class);
+                    productDetails.putExtra("productName", product.getProductName());
+                    productDetails.putExtra("productId", product.getProductId());
+                    productDetails.putExtra("productImage", product.getProductImageUrl());
+                    productDetails.putExtra("productPrice", product.getProductPrice());
+                    productDetails.putExtra("productMerchant", product.getProductMerchant());
+                    productDetails.putExtra("productDesc", product.getProductDescription());
+                    productDetails.putExtra("productRating", product.getMerchantRating());
+                    productDetails.putExtra("productQuantity", product.getUnitStock());
+                    productDetails.putExtra("merchantId", product.getMerchantId());
+                    mContext.startActivity(productDetails);
+                }
+            });
+        }
+        Glide.with(holder.productImage.getContext()).load(product.getProductImageUrl()).into(holder.productImage);
 
     }
 

@@ -28,6 +28,7 @@ public class UserServiceImp implements UserService {
         UserModel userModel = new UserModel();
         BeanUtils.copyProperties(userDto, userModel);
         userRepository.save(userModel);
+        BeanUtils.copyProperties(userModel, userDto);
         return userDto;
     }
 

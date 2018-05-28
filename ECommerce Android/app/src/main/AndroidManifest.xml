@@ -19,15 +19,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".View.HomeActivity" />
+        <activity
+            android:name=".View.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".View.ProductActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".View.CartActivity" />
-        <activity android:name=".View.OrderHistoryActivity"></activity>
-        <activity android:name=".View.LoginActivity"></activity>
-        <activity android:name=".View.SignupActivity"></activity>
-        <activity android:name=".View.launcher"></activity>
+        <activity android:name=".View.OrderHistoryActivity" />
+        <activity android:name=".View.LoginActivity" />
+        <activity android:name=".View.SignupActivity" />
+        <activity android:name=".View.launcher" />
+        <activity android:name=".View.SearchActivity" />
+        <activity android:name=".View.CategoryActivity" />
+        <activity android:name=".View.ChooseCategory" />
+        <activity android:name=".View.FilterCategory"></activity>
     </application>
 
 </manifest>

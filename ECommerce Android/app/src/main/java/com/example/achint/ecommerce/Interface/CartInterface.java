@@ -12,7 +12,7 @@ import retrofit2.http.Query;
 public interface CartInterface {
 
     @GET("add-to-cart")
-    Call<Boolean> addToCart(@Query("productId") String productId,@Query("unitStock") int unitStock,@Query("userId") String userId);
+    Call<Boolean> addToCart(@Query("productId") String productId,@Query("unitStock") int unitStock,@Query("userId") String userId, @Query("imageUrl") String imageUrl, @Query("productCost") double productCost, @Query("productName") String productName);
 
     @GET("remove-from-cart")
     Call<Boolean> removeFromCart(@Query("productId") String productId,@Query("unitStock") int unitStock,@Query("userId") String userId);//(@Body Product product);

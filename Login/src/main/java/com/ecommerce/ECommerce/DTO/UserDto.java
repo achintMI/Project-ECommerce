@@ -3,7 +3,7 @@ package com.ecommerce.ECommerce.DTO;
 import com.ecommerce.ECommerce.UserSecurity.HashPassword;
 
 public class UserDto {
-    private long user_id;
+    private String id;
     private String firstname;
     private String lastname;
     private String address;
@@ -27,6 +27,14 @@ public class UserDto {
     }
 
     public UserDto(){}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getFirstname() {
         return firstname;

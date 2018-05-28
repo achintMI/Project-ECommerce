@@ -11,14 +11,15 @@ public class MainController extends Application{
     private static Retrofit retrofitForOrder = null;
     private static Retrofit retrofitForProducts = null;
     private static Retrofit retrofitForLogin = null;
+    private static Retrofit retrofitForCart = null;
+    private static Retrofit retrofitForSearch = null;
     public static MainController mInstance;
 
-    private static final String cartUrl = "http://10.177.1.139:8080/cart/";
-    private static final String productUrl = "http://10.177.1.250:8081/products/";
-    private static final String orderUrl = "http://10.177.1.250:8080/orders/";
-    private static final String loginUrl = "http://10.177.2.78:8080/easybuy/";
-
-
+    private static final String cartUrl = "http://10.177.1.144:8080/cart/";
+    private static final String productUrl = "http://10.177.1.68:8081/products/";
+    private static final String orderUrl = "http://10.177.1.68:8080/orders/";
+    private static final String loginUrl = "http://10.177.1.68:8082/easybuy/";
+    private static final String searchUrl = "http:/10.177.1.143:8080/";
 
     @Override
     public void onCreate() {
@@ -71,7 +72,7 @@ public class MainController extends Application{
     }
 
     public Retrofit getClientForCart() {
-        if (null == retrofitForLogin) {
+        if (null == retrofitForCart) {
             OkHttpClient client = new OkHttpClient.Builder().retryOnConnectionFailure(true)
                     .build();
 
@@ -82,5 +83,18 @@ public class MainController extends Application{
                     .build();
         }
         return retrofitForLogin;
+    }
+
+    public Retrofit getClientForSearch() {
+        if (null == retrofitForSearch) {
+            OkHttpClient client = new OkHttpClient.Builder().retryOnConnectionFailure(true)
+                    .build();
+            retrofitForSearch = new Retrofit.Builder()
+                    .baseUrl(searchUrl)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(client)
+                    .build();
+        }
+        return retrofitForSearch;
     }
 }
