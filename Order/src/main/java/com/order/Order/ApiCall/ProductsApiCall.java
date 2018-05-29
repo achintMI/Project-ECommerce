@@ -15,11 +15,12 @@ public class ProductsApiCall {
     @Value("${product.client}")
     private String PRODUCTS_API ;
 
-    public void changeProductCount(String productId){
+    public void changeProductCount(String productId, int productCount){
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(PRODUCTS_API+"/reduceProductCount")
-                .queryParam("productId", productId);
+                .queryParam("productId", productId)
+                .queryParam("quantity", productCount);
         HttpEntity<?> entity = new HttpEntity<>(headers);
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> response = restTemplate.exchange(

@@ -9,5 +9,5 @@ import retrofit2.http.Query;
 
 public interface SearchInterface {
     @GET("search")
-    Call<Search[]> SearchProducts(@Query("searchTerm") String searchTerm);
+    Call<Search[]> SearchProducts(@Query("searchTerm") String searchTerm, @Query("page") int page, @Query("pageSize") int pageSize);
 }

@@ -1,13 +1,11 @@
 package com.example.achint.ecommerce.View;
 
-import android.app.Dialog;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.achint.ecommerce.Adapter.SearchAdapter;
 import com.example.achint.ecommerce.Controller.MainController;
 import com.example.achint.ecommerce.Adapter.ProductAdapter;
 import com.example.achint.ecommerce.Interface.ProductInteface;
@@ -31,6 +28,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +40,8 @@ public class HomeActivity extends AppCompatActivity implements ProductAdapter.IA
     private List<ProductData> productList = new ArrayList<>();
     private ProductAdapter productAdapter;
     SessionManagement session;
-
+    AlertDialog alert;
+    private AlertDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +70,22 @@ public class HomeActivity extends AppCompatActivity implements ProductAdapter.IA
            }
        });
 
+        final AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        builder.setTitle(R.string.app_name);
+        builder.setMessage("Do you want to log out ?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                session.logoutUser();    // stop chronometer here
+
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+
 
         session = new SessionManagement(getApplicationContext());
         Button loginButton = findViewById(R.id.login_btn);
@@ -81,11 +96,14 @@ public class HomeActivity extends AppCompatActivity implements ProductAdapter.IA
                     Intent loginIntent = new Intent(HomeActivity.this, LoginActivity.class);
                     startActivity(loginIntent);
                 }else{
-                    session.logoutUser();
-                    Toast.makeText(getApplicationContext(), "Pop up", Toast.LENGTH_LONG).show();
+                    alert = builder.create();
+                    alert.show();
                 }
             }
         });
+
+
+
 
     }
 
@@ -135,7 +153,7 @@ public class HomeActivity extends AppCompatActivity implements ProductAdapter.IA
     }
 
     public void getAllProductDetails() {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog = new SpotsDialog(HomeActivity.this, R.style.Custom);
         progressDialog.show();
         Call<ProductData[]> call = productApi.getAllProducts();
         call.enqueue(new Callback<ProductData[]>() {
@@ -145,7 +163,6 @@ public class HomeActivity extends AppCompatActivity implements ProductAdapter.IA
                     productList.addAll(Arrays.asList(response.body()));
                     productAdapter.notifyDataSetChanged();
                     progressDialog.dismiss();
-                    Toast.makeText(HomeActivity.this, "Worked", Toast.LENGTH_SHORT).show();
                 }
             }
 

@@ -23,7 +23,7 @@
     </item>
 
     <item android:visible="true" android:id="@+id/m_filte"
-        android:title="Filter By"
+        android:title="Sort By"
         android:icon="@drawable/ic_menu_camera"
         android:enabled="true">
         <menu>

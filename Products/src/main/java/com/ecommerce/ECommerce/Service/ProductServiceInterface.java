@@ -1,28 +1,28 @@
 package com.ecommerce.ECommerce.Service;
 
 import com.ecommerce.ECommerce.DTO.ProductDto;
-import com.ecommerce.ECommerce.Model.Product;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
 public interface ProductServiceInterface {
 
-    public List<Product> getProductList();
+    public List<ProductDto> getProductList();
 
-    List<Product> getProductById(String productId);
+    List<ProductDto> getProductById(String productId);
 
     String createProduct(ProductDto product);
 
-    int getMerchantRating(String productRating);
+    double getMerchantRating(String productRating);
 
-    List<Product> getMerchantById(String productId);
+    List<ProductDto> getMerchantById(String productId);
 
-    List<Product> getProductsByCategory(String productCategory);
+    List<ProductDto> getProductsByCategory(String productCategory);
 
-    List<Product> getProductsSortByPrice();
+    List<ProductDto> getProductsSortByPrice();
 
-    List<Product> getProductSortByRating();
+    List<ProductDto> getProductSortByRating();
 
-    boolean reduceProductCount(String productId);
+    boolean reduceProductCount(String productId, int quantity);
+
+    List<ProductDto> getMerchantByName(String productName);
 }

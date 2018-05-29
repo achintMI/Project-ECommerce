@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,40 +14,45 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.achint.ecommerce.Model.ProductData;
-import com.example.achint.ecommerce.View.ProductActivity;
 import com.example.achint.ecommerce.R;
+import com.example.achint.ecommerce.View.ProductActivity;
 
 import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
+public class MerchantAdapter extends Adapter<MerchantAdapter.ViewHolder> {
 
 
     private List<ProductData> mProducts;
     private Context mContext;
-    private IAdapterCommunicator iAdapterCommunicator;
+    private MerchantAdapter.IAdapterCommunicator iAdapterCommunicator;
 
-    public ProductAdapter(List<ProductData> productList, IAdapterCommunicator homeActivity) {
+    public MerchantAdapter(List<ProductData> productList, MerchantAdapter.IAdapterCommunicator homeActivity) {
         mProducts = productList;
         this.iAdapterCommunicator = homeActivity;
     }
 
     @NonNull
     @Override
-    public ProductAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_home, parent, false);
+    public MerchantAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_merchant, parent, false);
         mContext = parent.getContext();
-        return new ViewHolder(view);
+        return new MerchantAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MerchantAdapter.ViewHolder holder, int position) {
         final ProductData product  = mProducts.get(position);
         holder.productName.setText(product.getProductName());
         holder.productPrice.setText("Rs." + product.getProductPrice());
-        holder.productImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (product.getUnitStock() > 0) {
+        holder.merchantName.setText(product.getProductMerchant());
+        holder.merchantRating.setText(String.valueOf(product.getMerchantRating()));
+        if(product.getUnitStock()<=0){
+            Toast.makeText(mContext, "Out of Stock", Toast.LENGTH_LONG).show();
+        }else {
+            holder.productImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //  Toast.makeText(mContext, "position clicked" + product.getProductName(), Toast.LENGTH_SHORT).show();
                     Intent productDetails = new Intent(mContext, ProductActivity.class);
                     productDetails.putExtra("productName", product.getProductName());
                     productDetails.putExtra("productId", product.getProductId());
@@ -58,12 +64,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     productDetails.putExtra("productQuantity", product.getUnitStock());
                     productDetails.putExtra("merchantId", product.getMerchantId());
                     mContext.startActivity(productDetails);
-                }else{
-                    Toast.makeText(mContext, "Out of Stock", Toast.LENGTH_LONG).show();
                 }
-            }
-        });
-
+            });
+        }
         Glide.with(holder.productImage.getContext()).load(product.getProductImageUrl()).into(holder.productImage);
 
     }
@@ -77,12 +80,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         TextView productName;
         ImageView productImage;
         TextView productPrice;
+        TextView merchantName;
+        TextView merchantRating;
 
         public ViewHolder(View itemView) {
             super(itemView);
             productPrice = itemView.findViewById(R.id.product_price);
             productImage = itemView.findViewById(R.id.product_image);
             productName = itemView.findViewById(R.id.product_name);
+            merchantName = itemView.findViewById(R.id.merchant_name);
+            merchantRating = itemView.findViewById(R.id.merchant_rating);
         }
     }
 

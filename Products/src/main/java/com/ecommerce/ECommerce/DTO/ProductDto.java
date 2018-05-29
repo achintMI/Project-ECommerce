@@ -12,12 +12,20 @@ public class ProductDto {
     private String productDescription;
     private String productMerchant;
     private String productCategory;
-    private int productRating;
+    private double productRating;
     private boolean isIndexed;
     private String merchantId;
     private String productImageUrl;
+    private double merchantRating;
 
 
+    public double getMerchantRating() {
+        return merchantRating;
+    }
+
+    public void setMerchantRating(double merchantRating) {
+        this.merchantRating = merchantRating;
+    }
 
     public String getProductImageUrl() {
         return productImageUrl;
@@ -35,7 +43,7 @@ public class ProductDto {
         this.merchantId = merchantId;
     }
 
-    public int getProductRating() {
+    public double getProductRating() {
         return productRating;
     }
 
@@ -47,7 +55,7 @@ public class ProductDto {
         isIndexed = indexed;
     }
 
-    public void setProductRating(int productRating) {
+    public void setProductRating(double productRating) {
         this.productRating = productRating;
     }
 

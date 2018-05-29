@@ -51,7 +51,7 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.I
     private void SearchProducts(String search) {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.show();
-        Call<Search[]> call = productApi.SearchProducts(search);
+        Call<Search[]> call = productApi.SearchProducts(search, 0, 10);
         call.enqueue(new Callback<Search[]>() {
             @Override
             public void onResponse(Call<Search[]> call, Response<Search[]> response) {

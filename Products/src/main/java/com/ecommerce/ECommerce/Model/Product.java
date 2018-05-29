@@ -33,15 +33,15 @@ public class Product {
 
     private String merchantId;
 
-    private int merchantRating;
+    private double merchantRating;
 
-    private int productRating;
+    private double productRating;
 
     private boolean isIndexed;
 
 
 
-    public Product(String merchantId, int productRating, String productCategory, int merchantRating, String productImageUrl, String productId, String productName, Double productPrice, int unitStock, String productDescription, String productMerchant) {
+    public Product(String merchantId, double productRating, String productCategory, double merchantRating, String productImageUrl, String productId, String productName, Double productPrice, int unitStock, String productDescription, String productMerchant) {
         //Id = id;
         this.merchantId = merchantId;
         this.productId = productId;
@@ -69,7 +69,7 @@ public class Product {
         this.merchantId = merchantId;
     }
 
-    public int getProductRating() {
+    public double getProductRating() {
         return productRating;
     }
 
@@ -81,7 +81,7 @@ public class Product {
         isIndexed = indexed;
     }
 
-    public void setProductRating(int productRating) {
+    public void setProductRating(double productRating) {
         this.productRating = productRating;
     }
 
@@ -93,11 +93,11 @@ public class Product {
         this.productCategory = productCategory;
     }
 
-    public int getMerchantRating() {
+    public double getMerchantRating() {
         return merchantRating;
     }
 
-    public void setMerchantRating(int merchantRating) {
+    public void setMerchantRating(double merchantRating) {
         this.merchantRating = merchantRating;
     }
 

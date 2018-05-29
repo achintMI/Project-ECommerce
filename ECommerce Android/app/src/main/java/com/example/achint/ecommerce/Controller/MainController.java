@@ -18,7 +18,7 @@ public class MainController extends Application{
     private static final String cartUrl = "http://10.177.1.144:8080/cart/";
     private static final String productUrl = "http://10.177.1.68:8081/products/";
     private static final String orderUrl = "http://10.177.1.68:8080/orders/";
-    private static final String loginUrl = "http://10.177.1.68:8082/easybuy/";
+    private static final String loginUrl = "http://10.177.1.234:8080/easybuy/";
     private static final String searchUrl = "http:/10.177.1.143:8080/";
 
     @Override

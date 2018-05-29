@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,12 +57,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         //Binding UI
         final Product productDetails = productList.get(position);
         holder.tvProductName.setText(productDetails.getProductName());
-        holder.tvProductPrice.setText(String.valueOf(productDetails.getProductCost()));
+        holder.tvProductPrice.setText(String.valueOf(productDetails.getProductCost()*productDetails.getUnitStock()));
         Glide.with(holder.imgvProductImage.getContext()).load(productDetails.getImageUrl()).into(holder.imgvProductImage);
+
+        holder.tvQuantity.setText("Quantity:" + productDetails.getUnitStock());
+        holder.etRemoveQuantity.setText(String.valueOf(productDetails.getUnitStock()));
+
         holder.btRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iAdapterCommunicator.deleteItem(position);
+                int quantityToRemove = Integer.parseInt(holder.etRemoveQuantity.getText().toString());
+                iAdapterCommunicator.deleteItem(position, quantityToRemove);
             }
         });
 
@@ -76,16 +82,16 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     OrderInterface orderApi = MainController.getInstance().getClientForOrder().create(OrderInterface.class);
                     final ProgressDialog progressDialog = new ProgressDialog(mContext);
                     progressDialog.show();
-                    Call<OrderModel> call = orderApi.placeOrder(userEmail, productDetails.getImageUrl(), productDetails.getProductId(), userId, productDetails.getProductName(), productDetails.getProductCost());
+                    Call<OrderModel> call = orderApi.placeOrder(userEmail, productDetails.getImageUrl(), productDetails.getProductId(), userId, productDetails.getProductName(), productDetails.getProductCost()*productDetails.getUnitStock(), productDetails.getUnitStock());
                     call.enqueue(new Callback<OrderModel>() {
                         @Override
                         public void onResponse(Call<OrderModel> call, Response<OrderModel> response) {
                             if (200 == response.code()) {
                                 progressDialog.dismiss();
                                 Toast.makeText(mContext, "Success", Toast.LENGTH_SHORT).show();
+                                iAdapterCommunicator.deleteItem(position, productDetails.getUnitStock());
                             }
                         }
-
                         @Override
                         public void onFailure(Call<OrderModel> call, Throwable t) {
                             progressDialog.dismiss();
@@ -101,7 +107,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     }
 
-
     @Override
     public int getItemCount() {
         return productList.size();
@@ -113,9 +118,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         TextView tvProductPrice;
         Button btBuyNow;
         Button btRemove;
+        TextView tvQuantity;
+        EditText etRemoveQuantity;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            etRemoveQuantity = itemView.findViewById(R.id.et_remove_quantity);
+            tvQuantity = itemView.findViewById(R.id.tv_quantity);
             tvProductName = itemView.findViewById(R.id.tv_product_name);
             imgvProductImage = itemView.findViewById(R.id.imgv_product_image);
             tvProductPrice = itemView.findViewById(R.id.tv_product_price);
@@ -125,7 +134,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     }
 
     public static interface IAdapterCommunicator {
-        void deleteItem(int position);
+        void deleteItem(int position, int quantityToRemove);
 
     }
 }

@@ -17,10 +17,10 @@ public class ProductData {
     private String productMerchant;
 
     @SerializedName("merchantRating")
-    private int merchantRating;
+    private double merchantRating;
 
     @SerializedName("productRating")
-    private int productRating;
+    private double productRating;
 
     @SerializedName("productName")
     private String productName;
@@ -77,19 +77,19 @@ public class ProductData {
         return productMerchant;
     }
 
-    public void setMerchantRating(int merchantRating) {
+    public void setMerchantRating(double merchantRating) {
         this.merchantRating = merchantRating;
     }
 
-    public int getMerchantRating() {
+    public double getMerchantRating() {
         return merchantRating;
     }
 
-    public void setProductRating(int productRating) {
+    public void setProductRating(double productRating) {
         this.productRating = productRating;
     }
 
-    public int getProductRating() {
+    public double getProductRating() {
         return productRating;
     }
 

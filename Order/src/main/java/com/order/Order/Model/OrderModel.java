@@ -21,8 +21,9 @@ public class OrderModel {
     private LocalDate orderDate;
     private String productUrl;
     private double totalCost;
+    private int quantity;
 
-    public OrderModel(String productUrl, String productId, String userId, String merchantId, double totalCost) {
+    public OrderModel(String productUrl, String productId, String userId, String merchantId, double totalCost, int quantity) {
         this.orderDate = java.time.LocalDate.now();
         this.productId = productId;
         this.merchantId = merchantId;
@@ -30,10 +31,19 @@ public class OrderModel {
         this.totalCost = totalCost;
         this.productUrl = productUrl;
         this.orderDate = LocalDate.now();
+        this.quantity = quantity;
     }
 
     public OrderModel() {
 
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public LocalDate getOrderDate() {

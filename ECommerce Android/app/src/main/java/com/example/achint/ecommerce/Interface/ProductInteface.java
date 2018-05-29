@@ -22,4 +22,7 @@ public interface ProductInteface {
     @GET("getProductSortByRating")
     Call<ProductData[]> getProductSortByRating();
 
+    @GET("get-product-by-name")
+    Call<ProductData[]> getProductByName(@Query(value = "productName", encoded = true) String productName);
+
 }

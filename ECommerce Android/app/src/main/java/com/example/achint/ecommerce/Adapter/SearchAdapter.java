@@ -47,16 +47,16 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         holder.productImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //  Toast.makeText(mContext, "position clicked" + product.getProductName(), Toast.LENGTH_SHORT).show();
                 Intent productDetails = new Intent(mContext, ProductActivity.class);
                 productDetails.putExtra("productName", product.getProductName());
-//                productDetails.putExtra("productId", product.);
+                productDetails.putExtra("productId", product.getPid());
                 productDetails.putExtra("productImage", product.getImgSrc());
                 productDetails.putExtra("productPrice", product.getProductPrice());
-//                productDetails.putExtra("productDesc", product);
+                productDetails.putExtra("productDesc", product.getProductDesc());
                 productDetails.putExtra("productRating", product.getMerchantRating());
                 productDetails.putExtra("productQuantity", product.getStock());
-//                productDetails.putExtra("merchantId", product.());
+                productDetails.putExtra("merchantId", product.getMid());
+                productDetails.putExtra("productMerchant", product.getMerchantName());
                 mContext.startActivity(productDetails);
             }
         });

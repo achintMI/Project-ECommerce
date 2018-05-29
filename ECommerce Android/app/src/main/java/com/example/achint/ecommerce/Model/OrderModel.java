@@ -25,6 +25,9 @@ public class OrderModel{
 	@SerializedName("totalCost")
 	private double totalCost;
 
+	@SerializedName("productQuantity")
+	private int quantity;
+
 	public void setProductId(String productId){
 		this.productId = productId;
 	}

@@ -11,8 +11,8 @@ public class Product {
     @SerializedName("productId")
     private String productId;
 
-    @SerializedName("productQuantity")
-    private int productQuantity;
+    @SerializedName("unitStock")
+    private int unitStock;
 
     @SerializedName("userId")
     private String userId;
@@ -24,10 +24,10 @@ public class Product {
     private double productCost;
 
 
-    public Product(String productName, String productId, int productQuantity, String userId, String imageUrl, double productCost) {
+    public Product(String productName, String productId, int unitStock, String userId, String imageUrl, double productCost) {
         this.productName = productName;
         this.productId = productId;
-        this.productQuantity = productQuantity;
+        this.unitStock = unitStock;
         this.userId = userId;
         this.imageUrl = imageUrl;
         this.productCost = productCost;
@@ -49,12 +49,12 @@ public class Product {
         this.productId = productId;
     }
 
-    public int getProductQuantity() {
-        return productQuantity;
+    public int getUnitStock() {
+        return unitStock;
     }
 
-    public void setProductQuantity(int productQuantity) {
-        this.productQuantity = productQuantity;
+    public void setUnitStock(int unitStock) {
+        this.unitStock = unitStock;
     }
 
     public String getUserId() {

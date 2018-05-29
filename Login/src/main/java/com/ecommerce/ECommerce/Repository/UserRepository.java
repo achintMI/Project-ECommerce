@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends CrudRepository<UserModel,String>{
     boolean existsByEmail(String email);
     UserModel findByEmail(String email);
+    UserModel findByVerificationToken(String verificationToken);
 }

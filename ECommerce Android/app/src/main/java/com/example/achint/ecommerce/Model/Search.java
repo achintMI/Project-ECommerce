@@ -5,6 +5,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class Search{
 
+	@SerializedName("pid")
+	private String pid;
+
+	@SerializedName("mid")
+	private String mid;
+
 	@SerializedName("productDesc")
 	private String productDesc;
 
@@ -34,6 +40,22 @@ public class Search{
 
 	@SerializedName("merchantName")
 	private String merchantName;
+
+	public String getMid() {
+		return mid;
+	}
+
+	public void setMid(String mid) {
+		this.mid = mid;
+	}
+
+	public String getPid() {
+		return pid;
+	}
+
+	public void setPid(String pid) {
+		this.pid = pid;
+	}
 
 	public String getProductDesc() {
 		return productDesc;

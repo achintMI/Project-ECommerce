@@ -8,7 +8,6 @@
     android:orientation="vertical"
     tools:context=".View.ProductActivity">
 
-
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
@@ -27,31 +26,39 @@
             android:radius="30dp">
 
             <ImageView
+                android:layout_gravity="center"
                 android:id="@+id/product_image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/test" />
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:src="@drawable/test"
+                android:scaleType="fitCenter"/>
 
-            <TextView
-                android:id="@+id/product_name"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:fontFamily="@font/allura"
-                android:text="Product Name"
-                android:textAlignment="center"
-                android:textColor="#e4746868"
-                android:textSize="24dp" />
+                android:orientation="vertical"
+                android:background="#ef94c0d1">
+                <TextView
+                    android:id="@+id/product_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:fontFamily="@font/allura"
+                    android:text="Product Name"
+                    android:textAlignment="center"
+                    android:textColor="#e4746868"
+                    android:textSize="24dp" />
 
-            <TextView
-                android:id="@+id/product_price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Product Name"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="18dp" />
+                <TextView
+                    android:id="@+id/product_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Product Name"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18dp" />
+            </LinearLayout>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

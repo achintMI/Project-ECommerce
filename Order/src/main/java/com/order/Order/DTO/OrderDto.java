@@ -11,14 +11,24 @@ public class OrderDto {
     private double totalCost;
     private LocalDate orderDate;
     private String productUrl;
+    private int quantity;
 
-    public OrderDto(String productUrl, String productId, String userId, String merchantId, double totalCost) {
+    public OrderDto(String productUrl, String productId, String userId, String merchantId, double totalCost, int quantity) {
         this.productId = productId;
         this.merchantId = merchantId;
         this.userId = userId;
         this.totalCost = totalCost;
         this.orderDate = LocalDate.now();
         this.productUrl = productUrl;
+        this.quantity = quantity;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public LocalDate getOrderDate() {

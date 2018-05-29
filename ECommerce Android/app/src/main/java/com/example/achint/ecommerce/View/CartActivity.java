@@ -26,6 +26,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static java.lang.Math.abs;
+
 public class CartActivity extends AppCompatActivity implements CartAdapter.IAdapterCommunicator{
 
     private CartInterface mIProductApi;
@@ -80,31 +82,51 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.IAdap
 
 
     @Override
-    public void deleteItem(final int position) {
+    public void deleteItem(final int position, final int quantityToRemove) {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.show();
-
         Product product = mProductList.get(position);
+        Call<Boolean> call;
 
-        Call<Boolean> call = mIProductApi.removeFromCart(product.getProductId(),
-                product.getProductQuantity(),product.getUserId());
+        if(quantityToRemove >= product.getUnitStock())
+        {
+            call = mIProductApi.removeFromCart(product.getProductId(),
+                    product.getUnitStock(),product.getUserId());
 
+            mProductList.remove(position);
+            mCartAdapter.notifyItemRemoved(position);
+            mCartAdapter.notifyDataSetChanged();
+        }
+        else
+        {
+            int remainingQuantity = abs(quantityToRemove-product.getUnitStock());
+
+            product.setUnitStock(remainingQuantity);
+            mProductList.set(position,product);
+            mCartAdapter.notifyItemChanged(position);
+            mCartAdapter.notifyDataSetChanged();
+            product = mProductList.get(position);
+            int quantityToBeRemoved = product.getUnitStock()-remainingQuantity;
+            call = mIProductApi.removeFromCart(product.getProductId(),
+                    quantityToRemove,product.getUserId());
+        }
         call.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 progressDialog.dismiss();
-
                 if (response.code() == 200 && response.body() == true) {
-                    mProductList.remove(position);
-                    mCartAdapter.notifyItemRemoved(position);
-                    Toast.makeText(CartActivity.this, "Successfully removed product from Cart", Toast.LENGTH_LONG);
+                    Toast.makeText(CartActivity.this, "Successfully removed product from Cart", Toast.LENGTH_LONG).show();
+
+                    if(mProductList.size() == 0)
+                    {
+                        Toast.makeText(CartActivity.this, "Your Cart Is Empty", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
-
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(CartActivity.this, "Failed to remove product from Cart", Toast.LENGTH_LONG);
+                Toast.makeText(CartActivity.this, "Failed to remove product from Cart", Toast.LENGTH_LONG).show();
             }
         });
     }

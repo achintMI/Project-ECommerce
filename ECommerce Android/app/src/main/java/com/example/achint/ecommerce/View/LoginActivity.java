@@ -37,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
 
         etEmail = findViewById(R.id.et_lemail);
         etPassword = findViewById(R.id.et_lpassword);
-        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
         login = findViewById(R.id.bt_login);
         register = findViewById(R.id.bt_register);
 
@@ -47,7 +46,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(etEmail.getText().toString().trim().length() > 0 && etPassword.getText().toString().trim().length() > 0) {
-
                     Users users = new Users();
                     users.setEmail(etEmail.getText().toString());
                     users.setPassword(etPassword.getText().toString());
