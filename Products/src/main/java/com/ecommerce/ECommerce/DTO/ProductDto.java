@@ -3,6 +3,8 @@ package com.ecommerce.ECommerce.DTO;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public class ProductDto {
     private Long Id;
     private String productId;
@@ -18,6 +20,24 @@ public class ProductDto {
     private String productImageUrl;
     private double merchantRating;
 
+
+    public ProductDto() {
+    }
+
+    public ProductDto(String productId, String productName, Double productPrice, int unitStock, String productDescription, String productMerchant, String productCategory, double productRating, boolean isIndexed, String merchantId, String productImageUrl, double merchantRating) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.unitStock = unitStock;
+        this.productDescription = productDescription;
+        this.productMerchant = productMerchant;
+        this.productCategory = productCategory;
+        this.productRating = productRating;
+        this.isIndexed = isIndexed;
+        this.merchantId = merchantId;
+        this.productImageUrl = productImageUrl;
+        this.merchantRating = merchantRating;
+    }
 
     public double getMerchantRating() {
         return merchantRating;

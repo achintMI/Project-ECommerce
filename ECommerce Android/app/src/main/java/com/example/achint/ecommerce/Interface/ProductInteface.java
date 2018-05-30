@@ -25,4 +25,6 @@ public interface ProductInteface {
     @GET("get-product-by-name")
     Call<ProductData[]> getProductByName(@Query(value = "productName", encoded = true) String productName);
 
+    @GET("getProductById")
+    Call<ProductData> getProductById(@Query("productId") String productId);
 }

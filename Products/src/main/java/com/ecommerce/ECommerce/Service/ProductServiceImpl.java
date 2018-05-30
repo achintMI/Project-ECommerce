@@ -38,63 +38,50 @@ public class ProductServiceImpl  implements ProductServiceInterface{
         BeanUtils.copyProperties(product, productClass);
         productRepository.save(productClass);
         ProductSearchDto productSearchDto = new ProductSearchDto(product);
-        productsApiCall.addNewProduct(productSearchDto);
+        //productsApiCall.addNewProduct(productSearchDto);
         return "Success";
     }
 
     @Override
     public double getMerchantRating(String productId) {
         List<Product> product =  productRepository.findByProductId(productId);
-        List<ProductDto> x;
         return product.get(0).getMerchantRating();
     }
 
     @Override
-    public List<ProductDto> getProductList() {
+    public List<Product> getProductList() {
         List<Product> allProducts = productRepository.findAll();
-        List<ProductDto> productData = null;
-        BeanUtils.copyProperties(allProducts, productData);
-        return productData;
+        return allProducts;
     }
 
     @Override
-    public List<ProductDto> getProductById(String productId) {
+    public List<Product> getProductById(String productId) {
         List<Product> productById = productRepository.findByProductId(productId);
-        List<ProductDto> productDtoById = null;
-        BeanUtils.copyProperties(productById, productDtoById);
-        return productDtoById;
+        return productById;
     }
 
     @Override
-    public List<ProductDto> getMerchantById(String productId){
+    public List<Product> getMerchantById(String productId){
         List<Product> merchantByCategory = productRepository.findByProductId(productId);
-        List<ProductDto> productDtoByCategory = null;
-        BeanUtils.copyProperties(merchantByCategory, productDtoByCategory);
-        return productDtoByCategory;
+        return merchantByCategory;
     }
 
     @Override
-    public List<ProductDto> getProductsByCategory(String productCategory) {
-        List<ProductDto> productByCategory = productRepository.findByProductCategory(productCategory);
-        List<ProductDto> productDtoByCategory = null;
-        BeanUtils.copyProperties(productByCategory, productDtoByCategory);
-        return productDtoByCategory;
+    public List<Product> getProductsByCategory(String productCategory) {
+        List<Product> productByCategory = productRepository.findByProductCategory(productCategory);
+        return productByCategory;
     }
 
     @Override
-    public List<ProductDto> getProductsSortByPrice() {
+    public List<Product> getProductsSortByPrice() {
         List<Product> productSortedByPrice = productRepository.findAll(new Sort(Sort.Direction.ASC, "productPrice"));
-        List<ProductDto> productDtoSortedByPrice = null;
-        BeanUtils.copyProperties(productSortedByPrice, productDtoSortedByPrice);
-        return productDtoSortedByPrice;
+        return productSortedByPrice;
     }
 
     @Override
-    public List<ProductDto> getProductSortByRating() {
+    public List<Product> getProductSortByRating() {
         List<Product> productSortedByRating = productRepository.findAll(new Sort(Sort.Direction.DESC, "productRating"));
-        List<ProductDto> productDtoSortedByRating = null;
-        BeanUtils.copyProperties(productSortedByRating, productDtoSortedByRating);
-        return productDtoSortedByRating;
+        return productSortedByRating;
     }
 
     @Override
@@ -109,11 +96,9 @@ public class ProductServiceImpl  implements ProductServiceInterface{
     }
 
     @Override
-    public List<ProductDto> getMerchantByName(String productName) {
+    public List<Product> getMerchantByName(String productName) {
         List<Product> productsMerchantName = productRepository.findByProductName(productName);
-        List<ProductDto> productDtobyMerchantName = null;
-        BeanUtils.copyProperties(productsMerchantName, productDtobyMerchantName);
-        return productDtobyMerchantName;
+        return productsMerchantName;
     }
 
 

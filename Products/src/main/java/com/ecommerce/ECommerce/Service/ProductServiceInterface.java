@@ -1,28 +1,29 @@
 package com.ecommerce.ECommerce.Service;
 
 import com.ecommerce.ECommerce.DTO.ProductDto;
+import com.ecommerce.ECommerce.Model.Product;
 
 import java.util.List;
 
 public interface ProductServiceInterface {
 
-    public List<ProductDto> getProductList();
+    public List<Product> getProductList();
 
-    List<ProductDto> getProductById(String productId);
+    List<Product> getProductById(String productId);
 
     String createProduct(ProductDto product);
 
     double getMerchantRating(String productRating);
 
-    List<ProductDto> getMerchantById(String productId);
+    List<Product> getMerchantById(String productId);
 
-    List<ProductDto> getProductsByCategory(String productCategory);
+    List<Product> getProductsByCategory(String productCategory);
 
-    List<ProductDto> getProductsSortByPrice();
+    List<Product> getProductsSortByPrice();
 
-    List<ProductDto> getProductSortByRating();
+    List<Product> getProductSortByRating();
 
     boolean reduceProductCount(String productId, int quantity);
 
-    List<ProductDto> getMerchantByName(String productName);
+    List<Product> getMerchantByName(String productName);
 }

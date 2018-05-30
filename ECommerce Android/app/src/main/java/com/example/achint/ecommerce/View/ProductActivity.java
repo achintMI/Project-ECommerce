@@ -1,10 +1,9 @@
 package com.example.achint.ecommerce.View;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -23,15 +22,19 @@ import com.example.achint.ecommerce.Adapter.OrderAdapter;
 import com.example.achint.ecommerce.Controller.MainController;
 import com.example.achint.ecommerce.Interface.CartInterface;
 import com.example.achint.ecommerce.Interface.OrderInterface;
+import com.example.achint.ecommerce.Interface.ProductInteface;
 import com.example.achint.ecommerce.Model.OrderModel;
+import com.example.achint.ecommerce.Model.ProductData;
 import com.example.achint.ecommerce.R;
 import com.example.achint.ecommerce.Sessions.AlertDialogManager;
 import com.example.achint.ecommerce.Sessions.SessionManagement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,8 +43,9 @@ public class  ProductActivity extends AppCompatActivity {
 
     private Button buyButton, addToCartButton, productDesc, merchantBtn;
     private OrderInterface orderApi;
+    private ProductInteface productApi;
     private RecyclerView orderRecycler;
-    private List<OrderModel> productList = new ArrayList<>();
+    private List<ProductData> productList = new ArrayList<ProductData>();
     AlertDialogManager alert = new AlertDialogManager();
     private OrderAdapter orderAdapter;
     private String pId;
@@ -50,10 +54,13 @@ public class  ProductActivity extends AppCompatActivity {
     SessionManagement session;
     String pName, pImage, pMerchant, pDesc;
     String productUrl;
-    private int pQuantity;
-    private int productVal=10;
+    private int pQuantity = 0;
+    private int productVal;
     String productTotalCount;
     EditText produtQuantity;
+    private AlertDialog progressDialog;
+    TextView productName, productPrice;
+    ImageView productImage;
 
 
     @Override
@@ -63,28 +70,13 @@ public class  ProductActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        TextView productName = findViewById(R.id.product_name);
-        ImageView productImage = findViewById(R.id.product_image);
-        TextView productPrice = findViewById(R.id.product_price);
-        produtQuantity = findViewById(R.id.quant);
-
+        productApi = MainController.getInstance().getClientForProducts().create(ProductInteface.class);
 
         Bundle products = getIntent().getExtras();
-        pName = products.getString("productName");
-        pCost = products.getInt("productPrice");
-        pImage = products.getString("productImage");
-        pDesc = products.getString("productDesc");
         int pRating = products.getInt("productRating");
         pId = products.getString("productId");
-        merchantId = products.getString("merchantId");
-        pMerchant = products.getString("productMerchant");
-        pQuantity = products.getInt("productQuantity");
-        productUrl = products.getString("productImage");
 
-
-        productName.setText(pName);
-        Glide.with(productImage).load(productUrl).into(productImage);
-        productPrice.setText("Rs."+pCost);
+        getProductById(pId);
 
         buyButton = findViewById(R.id.buy_btn);
         addToCartButton = findViewById(R.id.add_to_cart_btn);
@@ -149,7 +141,7 @@ public class  ProductActivity extends AppCompatActivity {
                             public void onResponse(Call<OrderModel> call, Response<OrderModel> response) {
                                 if (200 == response.code()) {
                                     progressDialog.dismiss();
-                                    alert.showAlertDialog(ProductActivity.this, "Out of stock", "Order Placed", false);
+                                    alert.showAlertDialog(ProductActivity.this, "Congrats", "Order Placed", false);
                                 }
                             }
                             @Override
@@ -213,6 +205,38 @@ public class  ProductActivity extends AppCompatActivity {
                         finish();
                     }
                 }
+            }
+        });
+    }
+
+    private void getProductById(String productId) {
+        progressDialog = new SpotsDialog(ProductActivity.this, R.style.Custom);
+        progressDialog.show();
+        Call<ProductData> call = productApi.getProductById(productId);
+        call.enqueue(new Callback<ProductData>() {
+            @Override
+            public void onResponse(Call<ProductData> call, Response<ProductData> response) {
+                if (200 == response.code()) {
+                    ProductData productDetails = response.body();
+                    productName = findViewById(R.id.product_name);
+                    productImage = findViewById(R.id.product_image);
+                    productPrice = findViewById(R.id.product_price);
+                    produtQuantity = findViewById(R.id.quant);
+
+                    pQuantity = productDetails.getUnitStock();
+
+                    productName.setText(productDetails.getProductName());
+                    Glide.with(productImage).load(productDetails.getProductImageUrl()).into(productImage);
+                    productPrice.setText("Rs."+productDetails.getProductPrice());
+                    produtQuantity.setText(String.valueOf(productDetails.getUnitStock()));
+                    progressDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProductData> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(ProductActivity.this, "Failed to fetch", Toast.LENGTH_LONG).show();
             }
         });
     }

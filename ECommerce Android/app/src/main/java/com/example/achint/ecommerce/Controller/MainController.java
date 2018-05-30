@@ -47,7 +47,6 @@ public class MainController extends Application{
     public Retrofit getClientForProducts() {
         if (null == retrofitForProducts) {
             OkHttpClient client = new OkHttpClient.Builder().build();
-
             retrofitForProducts = new Retrofit.Builder()
                     .baseUrl(productUrl)
                     .addConverterFactory(GsonConverterFactory.create())

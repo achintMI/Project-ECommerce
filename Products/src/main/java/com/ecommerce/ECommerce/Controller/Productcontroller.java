@@ -24,21 +24,21 @@ public class Productcontroller {
     }
 
     @RequestMapping("/getAllProducts")
-    public List<ProductDto> getAllProducts() throws ProductException {
-        List<ProductDto> products = productService.getProductList();
+    public List<Product> getAllProducts() throws ProductException {
+        List<Product> products = productService.getProductList();
         if(null == products){
             throw new ProductException("Data not Available");
         }
         return products;
     }
 
-    @RequestMapping("/getProductById/{productId}")
-    public List<ProductDto> getProductById(@PathVariable(value = "productId") String productId) throws ProductException {
-        List<ProductDto> product = productService.getProductById(productId);
+    @RequestMapping("/getProductById")
+    public Product getProductById(@RequestParam(value = "productId") String productId) throws ProductException {
+        List<Product> product = productService.getProductById(productId);
         if(null == product){
             throw new ProductException("Data not Available");
         }
-        return product;
+        return product.get(0);
     }
 
     @RequestMapping("/getMerchantRating")
@@ -47,8 +47,8 @@ public class Productcontroller {
     }
 
     @RequestMapping("/get-product-by-category")
-    public List<ProductDto> getProductsByCategory(@RequestParam String productCategory) throws ProductException {
-        List<ProductDto> products = productService.getProductsByCategory(productCategory);
+    public List<Product> getProductsByCategory(@RequestParam String productCategory) throws ProductException {
+        List<Product> products = productService.getProductsByCategory(productCategory);
         if(null == products){
             throw new ProductException("Data not Available");
         }
@@ -56,8 +56,8 @@ public class Productcontroller {
     }
 
     @RequestMapping("/getProductSortByPrice")
-    public List<ProductDto> getProductSortByPrice() throws ProductException {
-        List<ProductDto> products = productService.getProductsSortByPrice();
+    public List<Product> getProductSortByPrice() throws ProductException {
+        List<Product> products = productService.getProductsSortByPrice();
         if(null == products){
             throw new ProductException("Data not Available");
         }
@@ -65,8 +65,8 @@ public class Productcontroller {
     }
 
     @RequestMapping("/getProductSortByRating")
-    public List<ProductDto> getProductSortByRating() throws ProductException {
-        List<ProductDto> products = productService.getProductSortByRating();
+    public List<Product> getProductSortByRating() throws ProductException {
+        List<Product> products = productService.getProductSortByRating();
         if(null == products){
             throw new ProductException("Data not Available");
         }
@@ -83,9 +83,9 @@ public class Productcontroller {
     }
 
     @RequestMapping(value = "/get-product-by-name")
-    public List<ProductDto> reduceProductCount(@RequestParam String productName) throws ProductException {
+    public List<Product> reduceProductCount(@RequestParam String productName) throws ProductException {
         String pname = URLDecoder.decode(productName);
-        List<ProductDto> products = productService.getMerchantByName(productName);
+        List<Product> products = productService.getMerchantByName(productName);
         if(null == products){
             throw new ProductException("Data not Available");
         }
