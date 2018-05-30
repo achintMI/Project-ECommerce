@@ -19,87 +19,102 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ProductServiceImpl  implements ProductServiceInterface{
+/**
+ * Try to use Logger for logging
+ */
+public class ProductServiceImpl implements ProductServiceInterface {
 
-    @Autowired
-    private ProductRepositoryInterface  productRepository;
+  private static final String PRODUCT_PRICE = "productPrice";
+  private static final String PRODUCT_RATING = "productRating";
+  @Autowired
+  private ProductRepositoryInterface productRepository;
 
 
-    @Autowired
-    MongoOperations mongoOperations;
+  @Autowired
+  MongoOperations mongoOperations;
 
-    @Autowired
-    @Qualifier("searchapi")
-    public SearchApiCall productsApiCall;
+  @Autowired
+  @Qualifier("searchapi")
+  public SearchApiCall productsApiCall;
 
-    @Override
-    public String createProduct(ProductDto product){
-        Product productClass = new Product();
-        BeanUtils.copyProperties(product, productClass);
-        productRepository.save(productClass);
-        ProductSearchDto productSearchDto = new ProductSearchDto(product);
-        //productsApiCall.addNewProduct(productSearchDto);
-        return "Success";
+  @Override
+  public String createProduct(ProductDto product) {
+    Product productClass = new Product();
+    BeanUtils.copyProperties(product, productClass);
+    productRepository.save(productClass);
+    /**
+     * Implement rollback from mongodb incase solr is not working
+     */
+    ProductSearchDto productSearchDto = new ProductSearchDto(product);
+    //productsApiCall.addNewProduct(productSearchDto);
+    return "Success";
+  }
+
+  @Override
+  public double getMerchantRating(String productId) {
+    List <Product> product = productRepository.findByProductId(productId);
+    return product.get(0).getMerchantRating();
+  }
+
+  @Override
+  public List <Product> getProductList() {
+    /**
+     * Directly return if possible
+     * no need to create extra variables
+     */
+    return productRepository.findAll();
+
+  }
+
+  @Override
+  public List <Product> getProductById(String productId) {
+    List <Product> productById = productRepository.findByProductId(productId);
+    return productById;
+  }
+
+  @Override
+  public List <Product> getMerchantById(String productId) {
+    List <Product> merchantByCategory = productRepository.findByProductId(productId);
+    return merchantByCategory;
+  }
+
+  @Override
+  public List <Product> getProductsByCategory(String productCategory) {
+    List <Product> productByCategory = productRepository.findByProductCategory(productCategory);
+    return productByCategory;
+  }
+
+  @Override
+  public List <Product> getProductsSortByPrice() {
+    List <Product> productSortedByPrice = productRepository.findAll(new Sort(Sort.Direction.ASC, PRODUCT_PRICE));
+    return productSortedByPrice;
+  }
+
+  @Override
+  public List <Product> getProductSortByRating() {
+    List <Product> productSortedByRating = productRepository.findAll(new Sort(Sort.Direction.DESC, PRODUCT_RATING));
+    return productSortedByRating;
+  }
+
+  @Override
+  public boolean reduceProductCount(String productId, int quantity) {
+    int productQuantity = -quantity;
+    UpdateResult result = mongoOperations.updateFirst(new Query(Criteria.where("_id").is(productId)),
+        new Update().inc("unitStock", productQuantity), Product.class);
+    /**
+     * You can directly return instead of using if
+     */
+    if (result.isModifiedCountAvailable()) {
+      return true;
     }
+    return false;
+  }
 
-    @Override
-    public double getMerchantRating(String productId) {
-        List<Product> product =  productRepository.findByProductId(productId);
-        return product.get(0).getMerchantRating();
-    }
-
-    @Override
-    public List<Product> getProductList() {
-        List<Product> allProducts = productRepository.findAll();
-        return allProducts;
-    }
-
-    @Override
-    public List<Product> getProductById(String productId) {
-        List<Product> productById = productRepository.findByProductId(productId);
-        return productById;
-    }
-
-    @Override
-    public List<Product> getMerchantById(String productId){
-        List<Product> merchantByCategory = productRepository.findByProductId(productId);
-        return merchantByCategory;
-    }
-
-    @Override
-    public List<Product> getProductsByCategory(String productCategory) {
-        List<Product> productByCategory = productRepository.findByProductCategory(productCategory);
-        return productByCategory;
-    }
-
-    @Override
-    public List<Product> getProductsSortByPrice() {
-        List<Product> productSortedByPrice = productRepository.findAll(new Sort(Sort.Direction.ASC, "productPrice"));
-        return productSortedByPrice;
-    }
-
-    @Override
-    public List<Product> getProductSortByRating() {
-        List<Product> productSortedByRating = productRepository.findAll(new Sort(Sort.Direction.DESC, "productRating"));
-        return productSortedByRating;
-    }
-
-    @Override
-    public boolean reduceProductCount(String productId, int quantity) {
-        int productQuantity = -quantity;
-        UpdateResult result = mongoOperations.updateFirst(new Query(Criteria.where("_id").is(productId)),
-                new Update().inc("unitStock", productQuantity), Product.class);
-        if(result.isModifiedCountAvailable()){
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public List<Product> getMerchantByName(String productName) {
-        List<Product> productsMerchantName = productRepository.findByProductName(productName);
-        return productsMerchantName;
-    }
+  @Override
+  public List <Product> getMerchantByName(String productName) {
+    List <Product> productsMerchantName = productRepository.findByProductName(productName);
+    return productsMerchantName;
+  }
 
 
 }

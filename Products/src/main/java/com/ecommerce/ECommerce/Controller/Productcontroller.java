@@ -34,6 +34,9 @@ public class Productcontroller {
 
     @RequestMapping("/getProductById")
     public Product getProductById(@RequestParam(value = "productId") String productId) throws ProductException {
+        /**
+         * Instead of using .get(0) use findFirstByProductById in repository
+         */
         List<Product> product = productService.getProductById(productId);
         if(null == product){
             throw new ProductException("Data not Available");
@@ -84,6 +87,9 @@ public class Productcontroller {
 
     @RequestMapping(value = "/get-product-by-name")
     public List<Product> reduceProductCount(@RequestParam String productName) throws ProductException {
+        /**
+         * Remove pname is not used
+         */
         String pname = URLDecoder.decode(productName);
         List<Product> products = productService.getMerchantByName(productName);
         if(null == products){

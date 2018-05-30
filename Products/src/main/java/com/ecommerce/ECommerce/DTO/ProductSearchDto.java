@@ -1,5 +1,8 @@
 package com.ecommerce.ECommerce.DTO;
 
+/**
+ * Primitive datatypes
+ */
 public class ProductSearchDto {
     private String pid;
     private String mid;

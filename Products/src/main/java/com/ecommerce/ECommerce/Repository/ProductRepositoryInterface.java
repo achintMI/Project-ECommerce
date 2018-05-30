@@ -10,6 +10,9 @@ public interface ProductRepositoryInterface extends MongoRepository<Product, Str
 
     List<Product> findByProductCategory(String productId);
 
+    /**
+     * Remove this if not used
+     */
     List<Product> findByProductPrice();
 
     List<Product> findByProductName(String productName);

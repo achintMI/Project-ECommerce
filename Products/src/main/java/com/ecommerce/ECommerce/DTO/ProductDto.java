@@ -5,11 +5,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+/**
+ * Try to use lombok
+ * Try to use primitive datatypes
+ */
 public class ProductDto {
-    private Long Id;
+    private Long Id; // Primitive datatypes
     private String productId;
     private String productName;
-    private Double productPrice;
+    private Double productPrice; // Primitive datatypes
     private int unitStock;
     private String productDescription;
     private String productMerchant;

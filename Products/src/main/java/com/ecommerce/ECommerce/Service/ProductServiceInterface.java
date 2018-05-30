@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ProductServiceInterface {
 
-    public List<Product> getProductList();
+   List<Product> getProductList();
 
     List<Product> getProductById(String productId);
 
@@ -15,7 +15,10 @@ public interface ProductServiceInterface {
 
     double getMerchantRating(String productRating);
 
-    List<Product> getMerchantById(String productId);
+ /**
+  * Remove this if not using this
+  */
+ List<Product> getMerchantById(String productId);
 
     List<Product> getProductsByCategory(String productCategory);
 
