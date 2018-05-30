@@ -18,9 +18,17 @@ public class OrderController {
     @Autowired
     private OrderInterface orderInterface;
 
+    /**
+     * Instead of passing so many request param create a request model
+     * And do a post request
+     */
     @RequestMapping("place-order")
     public OrderDto placeOrder(@RequestParam String emailUser, String productUrl, String productId, String userId, String merchantId, double cost, int quantity) throws AddressException {
         OrderDto orderDto = new OrderDto(productUrl, productId, userId, merchantId, cost, quantity);
+        /**
+         * What is db write fails.?
+         * Throw error if occured
+         */
         orderInterface.addProductToCart(orderDto);
         return orderDto;
     }

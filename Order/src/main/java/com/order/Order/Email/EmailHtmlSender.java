@@ -14,6 +14,10 @@ public class EmailHtmlSender {
     @Autowired
     private TemplateEngine templateEngine;
 
+    /**
+     * Make this method async
+     * @Async
+     */
     public EmailStatus send(String to, String subject, String templateName, Context context) {
         String body = templateEngine.process(templateName, context);
         return emailSender.sendHtml(to, subject, body);

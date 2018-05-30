@@ -17,6 +17,9 @@ public class EmailSender {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    /**
+     * Remove thsi if not used
+     */
     public EmailStatus sendPlainText(String to, String subject, String text) {
         return sendM(to, subject, text, false);
     }

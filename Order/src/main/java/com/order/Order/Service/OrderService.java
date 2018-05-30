@@ -20,6 +20,9 @@ public class OrderService implements  OrderInterface{
     @Autowired
     private OrderRepositoryInterface orderRepositoryInterface;
 
+    /**
+     * Make members as private
+     */
     @Autowired
     @Qualifier("productapi")
     public ProductsApiCall productsApiCall;
@@ -37,12 +40,18 @@ public class OrderService implements  OrderInterface{
         context.setVariable("productId", orderDto.getProductId());
         context.setVariable("productCost", orderDto.getTotalCost());
         context.setVariable("productUrl", orderDto.getProductUrl());
+        /**
+         * Fetch email from the properties
+         */
         EmailStatus emailStatus = emailHtmlSender.send("achintachu@gmail.com", "Congrats Your order has been placed", "mailTemplate", context);
     }
 
 
     @Override
     public List<OrderModel> getCartHistory(String userId) {
+        /**
+         * Directly return
+         */
         List<OrderModel> order = orderRepositoryInterface.findByUserId(userId);
         return order;
     }

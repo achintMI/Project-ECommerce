@@ -11,6 +11,10 @@ public class MailSender {
 
     @Autowired
     JavaMailSender javaMailSender;
+
+    /**
+     * Make this private
+     */
     public void sendMail(String from, String to, String subject, String body) {
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setFrom(from);
@@ -21,6 +25,9 @@ public class MailSender {
     }
 
     public void setMail(String emailUser){
+        /**
+         * Why declaring seperate variables??
+         */
         String from = "Ecommerce";
         String to = emailUser;
         String subject = "Order Placed";

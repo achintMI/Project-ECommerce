@@ -2,6 +2,10 @@ package com.order.Order.DTO;
 
 import java.time.LocalDate;
 
+/**
+ * Try to explore lombok
+ * convert variables to primitive
+ */
 public class OrderDto {
 
     private Long cartId;

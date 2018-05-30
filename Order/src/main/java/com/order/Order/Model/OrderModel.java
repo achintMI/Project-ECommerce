@@ -9,6 +9,9 @@ import java.util.Date;
 
 @Entity
 @Table(name="orders")
+/**
+ * Try to use lombok
+ */
 public class OrderModel {
 
     @Id
