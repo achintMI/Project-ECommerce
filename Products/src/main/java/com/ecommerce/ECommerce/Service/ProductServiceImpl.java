@@ -37,8 +37,11 @@ public class ProductServiceImpl  implements ProductServiceInterface{
         Product productClass = new Product();
         BeanUtils.copyProperties(product, productClass);
         productRepository.save(productClass);
+        /**
+         * Incase of failed request rollback from mongo
+         */
         ProductSearchDto productSearchDto = new ProductSearchDto(product);
-        //productsApiCall.addNewProduct(productSearchDto);
+        productsApiCall.addNewProduct(productSearchDto);
         return "Success";
     }
 
@@ -101,5 +104,10 @@ public class ProductServiceImpl  implements ProductServiceInterface{
         return productsMerchantName;
     }
 
+    @Override
+    public int getStockCount(String productId) {
+        List<Product> product = productRepository.findByProductId(productId);
+        return product.get(0).getUnitStock();
+    }
 
 }

@@ -1,122 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ebbbc5"
+    android:background="#ef94c0d1"
+    android:orientation="vertical"
     android:padding="40dp">
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff"
+        android:orientation="vertical"
         android:padding="20dp">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="Sign Up"
-            android:textSize="25dp"
             android:textColor="#000000"
+            android:textSize="25dp"
             app:fontFamily="sans-serif" />
-
         <android.support.design.widget.TextInputLayout
             android:id="@+id/usernameWrapper1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/et_firstname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="First Name"
-            android:layout_marginTop="16dp"
-            android:inputType="text"/>
-
+            <EditText
+                android:id="@+id/et_firstname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="First Name"
+                android:inputType="text" />
         </android.support.design.widget.TextInputLayout>
-
         <android.support.design.widget.TextInputLayout
             android:id="@+id/usernameWrapper2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/et_lastname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Last Name"
-            android:inputType="text"/>
+            <EditText
+                android:id="@+id/et_lastname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Last Name"
+                android:inputType="text" />
         </android.support.design.widget.TextInputLayout>
-
         <android.support.design.widget.TextInputLayout
             android:id="@+id/usernameWrapper3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/et_contact"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Contact"
-            android:inputType="phone"/>
-
+            <EditText
+                android:id="@+id/et_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contact"
+                android:inputType="phone" />
         </android.support.design.widget.TextInputLayout>
-
         <android.support.design.widget.TextInputLayout
             android:id="@+id/usernameWrapper4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/et_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Address"
-            android:inputType="textPostalAddress"/>
-
+            <EditText
+                android:id="@+id/et_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Address"
+                android:inputType="textPostalAddress" />
         </android.support.design.widget.TextInputLayout>
-
         <android.support.design.widget.TextInputLayout
             android:id="@+id/usernameWrapper5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/et_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email"
-            android:inputType="textEmailAddress"/>
-
+            <EditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textEmailAddress" />
         </android.support.design.widget.TextInputLayout>
-
         <android.support.design.widget.TextInputLayout
             android:id="@+id/usernameWrapper6"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/et_password"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword"/>
-
+            app:passwordToggleContentDescription="Show Password"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/colorAccent">
+            <EditText
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
-
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/usernameWrapper7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/et_confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Confirm Password"
+                android:inputType="textPassword" />
+        </android.support.design.widget.TextInputLayout>
         <Button
             android:id="@+id/bt_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Join Us!"
-            android:textColor="#ebbbc5"
-            android:background="#000000"
             android:layout_marginTop="25dp"
-            android:padding="10dp"/>
-
+            android:background="#000000"
+            android:padding="10dp"
+            android:text="Join Us!"
+            android:textColor="#ebbbc5" />
     </LinearLayout>
 </LinearLayout>

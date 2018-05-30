@@ -43,6 +43,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         final ProductData product  = mProducts.get(position);
         holder.productName.setText(product.getProductName());
         holder.productPrice.setText("Rs." + product.getProductPrice());
+        if(product.getUnitStock()<=0){
+            holder.outOfStock.setVisibility(View.VISIBLE);
+        }
         holder.productImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,9 +80,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         TextView productName;
         ImageView productImage;
         TextView productPrice;
+        TextView outOfStock;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            outOfStock = itemView.findViewById(R.id.out_of_stock);
             productPrice = itemView.findViewById(R.id.product_price);
             productImage = itemView.findViewById(R.id.product_image);
             productName = itemView.findViewById(R.id.product_name);

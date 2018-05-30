@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
-    android:layout_height="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
-
     <TextView
+        android:id="@+id/tv_my_cart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="#4747c4"
         android:text="My Cart"
         android:textAlignment="center"
-        android:layout_margin="5dp"
-        android:textSize="30dp"
         android:textColor="#FFFFFF"
-        android:background="#ef94c0d1"/>
-
-    <FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:textSize="30dp" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_cart_product_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_cart_product_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </android.support.v7.widget.RecyclerView>
-
-    </FrameLayout>
-
-</LinearLayout>
+        android:layout_below="@+id/tv_my_cart"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/bt_checkout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="5dp"
+        android:background="#4747c4"
+        android:text="Checkout"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:layout_alignParentBottom="true"
+        android:textSize="30dp" />
+</RelativeLayout>

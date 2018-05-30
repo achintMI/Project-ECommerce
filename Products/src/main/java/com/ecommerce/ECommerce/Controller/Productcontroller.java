@@ -91,4 +91,10 @@ public class Productcontroller {
         }
         return products;
     }
+
+    @RequestMapping(value = "/get-stock-count")
+    public int getStockCount(@RequestParam String productId){
+        return productService.getStockCount(productId);
+    }
+
 }

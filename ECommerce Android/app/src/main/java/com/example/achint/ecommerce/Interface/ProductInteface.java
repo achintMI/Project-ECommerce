@@ -27,4 +27,7 @@ public interface ProductInteface {
 
     @GET("getProductById")
     Call<ProductData> getProductById(@Query("productId") String productId);
+
+    @GET("get-stock-count")
+    Call<Integer> getStockCount(@Query("productId")String productId);
 }

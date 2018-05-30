@@ -47,7 +47,7 @@ public class MerchantAdapter extends Adapter<MerchantAdapter.ViewHolder> {
         holder.merchantName.setText(product.getProductMerchant());
         holder.merchantRating.setText(String.valueOf(product.getMerchantRating()));
         if(product.getUnitStock()<=0){
-            Toast.makeText(mContext, "Out of Stock", Toast.LENGTH_LONG).show();
+            holder.outOfStock.setVisibility(View.VISIBLE);
         }else {
             holder.productImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -82,9 +82,11 @@ public class MerchantAdapter extends Adapter<MerchantAdapter.ViewHolder> {
         TextView productPrice;
         TextView merchantName;
         TextView merchantRating;
+        TextView outOfStock;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            outOfStock = itemView.findViewById(R.id.out_of_stock);
             productPrice = itemView.findViewById(R.id.product_price);
             productImage = itemView.findViewById(R.id.product_image);
             productName = itemView.findViewById(R.id.product_name);

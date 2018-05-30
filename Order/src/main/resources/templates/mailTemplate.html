@@ -7,7 +7,7 @@
 <body>
     <center>
         <div >
-            <div style="background: white; width: 550px; height: 450px; border: 5px solid red; border-radius: 10px">
+            <div style="background: white; width: 300px; height: 450px; border: 2px solid green; border-radius: 10px">
                 <img th:src="${productUrl}" width="100%" height="300px" alt="Image Not Found">
                 <div style="background: white;border-radius 2px;">
                     <h3 style="color: green;">Your Order has been placed, Thank you for shopping with us</h3><hr>
@@ -22,10 +22,26 @@
                         </tr>
                         <tr>
                             <td>
-                                Product Cost:
+                                Product Cost
                             </td>
                             <td>
                                 <span th:text="${productCost}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Product Quantity
+                            </td>
+                            <td>
+                                <span th:text="${prodcutQuantity}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Total Cost
+                            </td>
+                            <td>
+                                <span th:text="${productTotalCost}"></span>
                             </td>
                         </tr>
                     </table>

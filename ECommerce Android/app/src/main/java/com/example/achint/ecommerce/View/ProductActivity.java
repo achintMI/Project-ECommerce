@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.Rating;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,10 +59,13 @@ public class  ProductActivity extends AppCompatActivity {
     private int pQuantity = 0;
     private int productVal;
     String productTotalCount;
-    EditText produtQuantity;
+    TextView produtQuantity;
     private AlertDialog progressDialog;
-    TextView productName, productPrice;
+    TextView productName, product_name, productPrice, productIdentity, merchantName, productDescription;
     ImageView productImage;
+    RatingBar merchantRating;
+    ImageView upButton, downButton;
+    TextView outOfStock;
 
 
     @Override
@@ -78,10 +83,32 @@ public class  ProductActivity extends AppCompatActivity {
 
         getProductById(pId);
 
+        outOfStock = findViewById(R.id.out_of_stock);
         buyButton = findViewById(R.id.buy_btn);
         addToCartButton = findViewById(R.id.add_to_cart_btn);
-        productDesc = findViewById(R.id.product_desc);
         merchantBtn = findViewById(R.id.merchant);
+        upButton = findViewById(R.id.top_btn);
+        downButton = findViewById(R.id.down_btn);
+
+
+
+
+        upButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                produtQuantity = findViewById(R.id.quant);
+                produtQuantity.setText(String.valueOf(Integer.parseInt(produtQuantity.getText().toString())+1));
+            }
+        });
+
+        downButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                produtQuantity = findViewById(R.id.quant);
+                produtQuantity.setText(String.valueOf(Integer.parseInt(produtQuantity.getText().toString())-1));
+            }
+        });
+
 
         merchantBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,68 +119,58 @@ public class  ProductActivity extends AppCompatActivity {
             }
         });
 
-        productDesc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Dialog fbDialogue = new Dialog(ProductActivity.this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
-                fbDialogue.setContentView(R.layout.activity_product_desc);
-                TextView productName = fbDialogue.findViewById(R.id.product_name);
-                TextView merchantName = fbDialogue.findViewById(R.id.merchant_name);
-                TextView productPrice = fbDialogue.findViewById(R.id.product_price);
-                TextView productDesc = fbDialogue.findViewById(R.id.product_desc);
-
-                productName.setText(pName);
-                merchantName.setText(pMerchant);
-                productPrice.setText(String.valueOf(pCost));
-                productDesc.setText(pDesc);
-                fbDialogue.setCancelable(true);
-                fbDialogue.show();
-            }
-        });
-
         buyButton.setOnClickListener(new View.OnClickListener() {
             //productTotalCount = produtQuantity.getText().toString();
             @Override
             public void onClick(View v) {
                 productTotalCount = produtQuantity.getText().toString();
-                if(productTotalCount.equals("")){
-                    productVal = 1;
-                }else{
-                    productVal = Integer.parseInt(productTotalCount);
-                    if(productVal==0){
-                        productVal = 1;
-                    }
-                }
-                if (productVal > pQuantity || productVal<0) {
-                    alert.showAlertDialog(ProductActivity.this, "Out of stock", "Please select quantity between 0 - "+pQuantity, false);
+                if (pQuantity == 0) {
+                    alert.showAlertDialog(ProductActivity.this, "Out Of Stock", "Please try some other item", false);
                 } else {
-                    session = new SessionManagement(getApplicationContext());
-                    if (session.isLoggedIn()) {
-                        HashMap<String, String> user = session.getUserDetails();
-                        String userEmail = user.get(SessionManagement.KEY_EMAIL);
-                        String userId = user.get(SessionManagement.KEY_ID);
-                        OrderInterface orderApi = MainController.getInstance().getClientForOrder().create(OrderInterface.class);
-                        final ProgressDialog progressDialog = new ProgressDialog(ProductActivity.this);
-                        progressDialog.show();
-                        Call<OrderModel> call = orderApi.placeOrder(userEmail, productUrl, pId, userId, merchantId, pCost*productVal, productVal);
-                        call.enqueue(new Callback<OrderModel>() {
-                            @Override
-                            public void onResponse(Call<OrderModel> call, Response<OrderModel> response) {
-                                if (200 == response.code()) {
-                                    progressDialog.dismiss();
-                                    alert.showAlertDialog(ProductActivity.this, "Congrats", "Order Placed", false);
-                                }
-                            }
-                            @Override
-                            public void onFailure(Call<OrderModel> call, Throwable t) {
-                                progressDialog.dismiss();
-                                alert.showAlertDialog(ProductActivity.this, "Out of stock", "Please try again", false);
-                            }
-                        });
+                    if (productTotalCount.equals("")) {
+                        productVal = 1;
                     } else {
-                        Intent loginIntent = new Intent(ProductActivity.this, LoginActivity.class);
-                        startActivity(loginIntent);
-                        finish();
+                        productVal = Integer.parseInt(productTotalCount);
+                        if (productVal == 0) {
+                            productVal = 1;
+                        }
+                    }
+                    if (productVal > pQuantity || productVal < 0) {
+                        alert.showAlertDialog(ProductActivity.this, "Out of stock", "Please select quantity between 0 - " + pQuantity, false);
+                    } else {
+                        session = new SessionManagement(getApplicationContext());
+                        if (session.isLoggedIn()) {
+                            HashMap<String, String> user = session.getUserDetails();
+                            String userEmail = user.get(SessionManagement.KEY_EMAIL);
+                            String userId = user.get(SessionManagement.KEY_ID);
+                            OrderInterface orderApi = MainController.getInstance().getClientForOrder().create(OrderInterface.class);
+                            final ProgressDialog progressDialog = new ProgressDialog(ProductActivity.this);
+                            progressDialog.show();
+                            Call<OrderModel> call = orderApi.placeOrder(userEmail, productUrl, pId, userId, merchantId, pCost * productVal, productVal);
+                            call.enqueue(new Callback<OrderModel>() {
+                                @Override
+                                public void onResponse(Call<OrderModel> call, Response<OrderModel> response) {
+                                    if (200 == response.code()) {
+                                        progressDialog.dismiss();
+                                        alert.showAlertDialog(ProductActivity.this, "Congrats", "Order Placed", true);
+                                        pQuantity = pQuantity - productVal;
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<OrderModel> call, Throwable t) {
+                                    progressDialog.dismiss();
+                                    alert.showAlertDialog(ProductActivity.this, "Out of stock", "Please try again", false);
+                                }
+                            });
+                            if(pQuantity<=0){
+                               outOfStock.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            Intent loginIntent = new Intent(ProductActivity.this, LoginActivity.class);
+                            startActivity(loginIntent);
+                            finish();
+                        }
                     }
                 }
             }
@@ -222,13 +239,32 @@ public class  ProductActivity extends AppCompatActivity {
                     productImage = findViewById(R.id.product_image);
                     productPrice = findViewById(R.id.product_price);
                     produtQuantity = findViewById(R.id.quant);
+                    product_name = findViewById(R.id.productName);
+                    //productIdentity = findViewById(R.id.productId);
+                    merchantName = findViewById(R.id.merchantName);
+                    merchantRating = findViewById(R.id.merchantRating);
+                    productDescription = findViewById(R.id.productDesc);
 
+                    pImage = productDetails.getProductImageUrl();
+                    productUrl = productDetails.getProductImageUrl();
+                    merchantId = productDetails.getMerchantId();
+                    pId = productDetails.getProductId();
+                    merchantId = productDetails.getMerchantId();
+                    pCost = productDetails.getProductPrice();
                     pQuantity = productDetails.getUnitStock();
+                    productVal = pQuantity;
+                    pName = productDetails.getProductName();
 
                     productName.setText(productDetails.getProductName());
                     Glide.with(productImage).load(productDetails.getProductImageUrl()).into(productImage);
                     productPrice.setText("Rs."+productDetails.getProductPrice());
                     produtQuantity.setText(String.valueOf(productDetails.getUnitStock()));
+                    product_name.setText(productDetails.getProductName());
+                    //productIdentity.setText(productDetails.getProductId());
+                    merchantName.setText(productDetails.getProductMerchant());
+                    merchantRating.setRating((int)productDetails.getMerchantRating());
+                    productDescription.setText(productDetails.getProductDescription());
+
                     progressDialog.dismiss();
                 }
             }

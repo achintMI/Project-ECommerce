@@ -5,12 +5,17 @@ import android.os.Bundle;
 
 import com.example.achint.ecommerce.Controller.MainController;
 import com.example.achint.ecommerce.Interface.CartInterface;
+import com.example.achint.ecommerce.Interface.OrderInterface;
+import com.example.achint.ecommerce.Interface.ProductInteface;
+import com.example.achint.ecommerce.Model.OrderModel;
 import com.example.achint.ecommerce.R;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.achint.ecommerce.Adapter.CartAdapter;
@@ -28,12 +33,15 @@ import retrofit2.Response;
 
 import static java.lang.Math.abs;
 
-public class CartActivity extends AppCompatActivity implements CartAdapter.IAdapterCommunicator{
+public class CartActivity extends AppCompatActivity implements CartAdapter.IAdapterCommunicator {
 
     private CartInterface mIProductApi;
     private RecyclerView mRecyclerView;
     private CartAdapter mCartAdapter;
     private List<Product> mProductList = new ArrayList<>();
+    private Button btCheckout;
+    private ProductInteface productApi;
+    SessionManagement session;
 
     private String userId;
 
@@ -52,13 +60,84 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.IAdap
 
         listCartItems();
 
+        btCheckout = findViewById(R.id.bt_checkout);
+        productApi = MainController.getInstance().getClientForProducts().create(ProductInteface.class);
+        btCheckout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mProductList.size() > 0) {
+                    for (int productCounter = 0; productCounter < mProductList.size(); productCounter++) {
+                        Call<Integer> call = productApi.getStockCount(mProductList.get(productCounter).getProductId());
+                        final int finalProductCounter = productCounter;
+                        call.enqueue(new Callback<Integer>() {
+                            @Override
+                            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                if (response.code() == 200) {
+                                    Integer productCount = response.body();
+                                    if (productCount < mProductList.get(finalProductCounter).getUnitStock()) {
+                                        Toast.makeText(CartActivity.this, "Out Of Stock", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        placeOrder(mProductList.get(finalProductCounter).getImageUrl(),
+                                                mProductList.get(finalProductCounter).getProductName(),
+                                                mProductList.get(finalProductCounter).getProductId(),
+                                                mProductList.get(finalProductCounter).getUnitStock(),
+                                                mProductList.get(finalProductCounter).getProductCost());
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Integer> call, Throwable t) {
+//                                progressDialog.dismiss();
+                                Toast.makeText(CartActivity.this, "Failed to Show Cart", Toast.LENGTH_LONG).show();
+                            }
+
+                        });
+
+                    }
+                }
+                if (mProductList.size() == 0) {
+                    Toast.makeText(CartActivity.this, "Your Cart Is Empty", Toast.LENGTH_LONG).show();
+                } else {
+                    clearCart();
+                }
+            }
+        });
+
     }
 
-    private void listCartItems()
-    {
+    public void clearCart() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.show();
-        Call< Product[]> call = mIProductApi.cartListItems(userId);
+        Call<Boolean> call = mIProductApi.clearCart(userId);
+        call.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                progressDialog.dismiss();
+                if (response.code() == 200 && response.body()) {
+                    mProductList.clear();
+                    mCartAdapter.notifyDataSetChanged();
+                    Toast.makeText(CartActivity.this, "Successfully Checked Out " +
+                            "Your Cart", Toast.LENGTH_LONG).show();
+                    if (mProductList.size() == 0) {
+                        Toast.makeText(CartActivity.this, "Your Cart Is Empty", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(CartActivity.this, "Failed to Checkout Cart",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void listCartItems() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
+        Call<Product[]> call = mIProductApi.cartListItems(userId);
         call.enqueue(new Callback<Product[]>() {
             @Override
             public void onResponse(Call<Product[]> call, Response<Product[]> response) {
@@ -69,6 +148,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.IAdap
                     progressDialog.dismiss();
                 }
             }
+
             @Override
             public void onFailure(Call<Product[]> call, Throwable t) {
                 progressDialog.dismiss();
@@ -79,8 +159,6 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.IAdap
     }
 
 
-
-
     @Override
     public void deleteItem(final int position, final int quantityToRemove) {
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -88,27 +166,24 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.IAdap
         Product product = mProductList.get(position);
         Call<Boolean> call;
 
-        if(quantityToRemove >= product.getUnitStock())
-        {
+        if (quantityToRemove >= product.getUnitStock()) {
             call = mIProductApi.removeFromCart(product.getProductId(),
-                    product.getUnitStock(),product.getUserId());
+                    product.getUnitStock(), product.getUserId());
 
             mProductList.remove(position);
             mCartAdapter.notifyItemRemoved(position);
             mCartAdapter.notifyDataSetChanged();
-        }
-        else
-        {
-            int remainingQuantity = abs(quantityToRemove-product.getUnitStock());
+        } else {
+            int remainingQuantity = abs(quantityToRemove - product.getUnitStock());
 
             product.setUnitStock(remainingQuantity);
-            mProductList.set(position,product);
+            mProductList.set(position, product);
             mCartAdapter.notifyItemChanged(position);
             mCartAdapter.notifyDataSetChanged();
             product = mProductList.get(position);
-            int quantityToBeRemoved = product.getUnitStock()-remainingQuantity;
+            int quantityToBeRemoved = product.getUnitStock() - remainingQuantity;
             call = mIProductApi.removeFromCart(product.getProductId(),
-                    quantityToRemove,product.getUserId());
+                    quantityToRemove, product.getUserId());
         }
         call.enqueue(new Callback<Boolean>() {
             @Override
@@ -117,17 +192,48 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.IAdap
                 if (response.code() == 200 && response.body() == true) {
                     Toast.makeText(CartActivity.this, "Successfully removed product from Cart", Toast.LENGTH_LONG).show();
 
-                    if(mProductList.size() == 0)
-                    {
+                    if (mProductList.size() == 0) {
                         Toast.makeText(CartActivity.this, "Your Cart Is Empty", Toast.LENGTH_LONG).show();
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
                 progressDialog.dismiss();
                 Toast.makeText(CartActivity.this, "Failed to remove product from Cart", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void placeOrder(String imageUrl, String productName, String productId, int stock, double cost) {
+        session = new SessionManagement(CartActivity.this);
+        if (session.isLoggedIn()) {
+            HashMap<String, String> user = session.getUserDetails();
+            String userEmail = user.get(SessionManagement.KEY_EMAIL);
+            String userId = user.get(SessionManagement.KEY_ID);
+            OrderInterface orderApi = MainController.getInstance().getClientForOrder().create(OrderInterface.class);
+            final ProgressDialog progressDialog = new ProgressDialog(CartActivity.this);
+            progressDialog.show();
+            Call<OrderModel> call = orderApi.placeOrder(userEmail, imageUrl, productId, userId, productName, cost * stock, stock);
+            call.enqueue(new Callback<OrderModel>() {
+                @Override
+                public void onResponse(Call<OrderModel> call, Response<OrderModel> response) {
+                    if (200 == response.code()) {
+                        progressDialog.dismiss();
+                        Toast.makeText(CartActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<OrderModel> call, Throwable t) {
+                    progressDialog.dismiss();
+                    Toast.makeText(CartActivity.this, "Please try again.", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Intent loginIntent = new Intent(CartActivity.this, LoginActivity.class);
+            CartActivity.this.startActivity(loginIntent);
+        }
     }
 }

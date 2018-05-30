@@ -75,13 +75,13 @@ public class MainController extends Application{
             OkHttpClient client = new OkHttpClient.Builder().retryOnConnectionFailure(true)
                     .build();
 
-            retrofitForLogin = new Retrofit.Builder()
+            retrofitForCart = new Retrofit.Builder()
                     .baseUrl(cartUrl)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();
         }
-        return retrofitForLogin;
+        return retrofitForCart;
     }
 
     public Retrofit getClientForSearch() {

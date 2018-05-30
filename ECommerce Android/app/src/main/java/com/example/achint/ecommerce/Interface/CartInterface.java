@@ -20,4 +20,7 @@ public interface CartInterface {
     @GET("cart-list-items")
     Call<Product[]> cartListItems(@Query("userId") String userId);
 
+    @GET("clear-cart")
+    Call<Boolean> clearCart(@Query("userId") String userId);
+
 }

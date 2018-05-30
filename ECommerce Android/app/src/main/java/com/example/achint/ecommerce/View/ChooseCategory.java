@@ -21,6 +21,7 @@ public class ChooseCategory extends AppCompatActivity {
         CardView catPhone = findViewById(R.id.cat_phone);
         CardView catMenShoe = findViewById(R.id.men_shoe);
         CardView catWomenShoe = findViewById(R.id.women_shoe);
+        CardView catWatch = findViewById(R.id.watch);
         CardView catHeadPhone = findViewById(R.id.headphone);
 
         catWomen.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +72,14 @@ public class ChooseCategory extends AppCompatActivity {
             public void onClick(View v) {
                 Intent categoryIntent = new Intent(ChooseCategory.this, CategoryActivity.class);
                 categoryIntent.putExtra("category", "headphone");
+                startActivity(categoryIntent);
+            }
+        });
+        catWatch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent categoryIntent = new Intent(ChooseCategory.this, CategoryActivity.class);
+                categoryIntent.putExtra("category", "watch");
                 startActivity(categoryIntent);
             }
         });

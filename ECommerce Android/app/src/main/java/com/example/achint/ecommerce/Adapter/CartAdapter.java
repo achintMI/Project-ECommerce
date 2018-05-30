@@ -54,7 +54,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        //Binding UI
         final Product productDetails = productList.get(position);
         holder.tvProductName.setText(productDetails.getProductName());
         holder.tvProductPrice.setText(String.valueOf(productDetails.getProductCost()*productDetails.getUnitStock()));

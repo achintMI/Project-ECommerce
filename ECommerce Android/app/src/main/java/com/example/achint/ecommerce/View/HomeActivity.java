@@ -101,10 +101,6 @@ public class HomeActivity extends AppCompatActivity implements ProductAdapter.IA
                 }
             }
         });
-
-
-
-
     }
 
     @Override

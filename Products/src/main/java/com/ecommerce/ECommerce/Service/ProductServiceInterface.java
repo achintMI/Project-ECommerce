@@ -26,4 +26,6 @@ public interface ProductServiceInterface {
     boolean reduceProductCount(String productId, int quantity);
 
     List<Product> getMerchantByName(String productName);
+
+    int getStockCount(String productId);
 }

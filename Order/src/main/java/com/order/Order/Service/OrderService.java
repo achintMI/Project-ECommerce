@@ -34,9 +34,13 @@ public class OrderService implements  OrderInterface{
         orderRepositoryInterface.save(order);
         productsApiCall.changeProductCount(order.getProductId(), order.getQuantity());
         Context context = new Context();
+
+        double cost = orderDto.getTotalCost()/orderDto.getQuantity();
         context.setVariable("productId", orderDto.getProductId());
-        context.setVariable("productCost", orderDto.getTotalCost());
+        context.setVariable("productCost", cost);
         context.setVariable("productUrl", orderDto.getProductUrl());
+        context.setVariable("prodcutQuantity", orderDto.getQuantity());
+        context.setVariable("productTotalCost", orderDto.getTotalCost());
         EmailStatus emailStatus = emailHtmlSender.send("achintachu@gmail.com", "Congrats Your order has been placed", "mailTemplate", context);
     }
 

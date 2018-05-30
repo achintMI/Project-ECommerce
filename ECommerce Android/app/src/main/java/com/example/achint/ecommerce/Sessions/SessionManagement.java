@@ -6,16 +6,12 @@ import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.example.achint.ecommerce.View.LoginActivity;
-import com.example.achint.ecommerce.View.NavigationActivity;
 
 import java.util.HashMap;
 
 public class SessionManagement {
     // Shared Preferences
     SharedPreferences pref;
-
-    // Editor for Shared preferences
-    SharedPreferences.Editor editor;
 
     // Context
     Context _context;
@@ -43,11 +39,13 @@ public class SessionManagement {
     public SessionManagement(Context context){
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
-        editor = pref.edit();
     }
 
     //Create Login Session
     public void createLoginSession(String name, String email, String userId){
+        // Editor for Shared preferences
+        SharedPreferences.Editor editor;
+        editor = pref.edit();
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
@@ -99,6 +97,9 @@ public class SessionManagement {
     }
 
     public void logoutUser(){
+        // Editor for Shared preferences
+        SharedPreferences.Editor editor;
+        editor = pref.edit();
         // Clearing all data from Shared Preferences
         editor.clear();
         editor.commit();

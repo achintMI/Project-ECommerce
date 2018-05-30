@@ -16,6 +16,8 @@ import com.example.achint.ecommerce.R;
 import com.example.achint.ecommerce.Sessions.AlertDialogManager;
 import com.example.achint.ecommerce.Sessions.SessionManagement;
 
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -90,6 +92,13 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(i);
                     finish();
 
+                }else{
+                    try {
+                        alert.showAlertDialog(LoginActivity.this, "Login Failed ..", response.errorBody().string(), false);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    progressDialog.dismiss();
                 }
             }
 
