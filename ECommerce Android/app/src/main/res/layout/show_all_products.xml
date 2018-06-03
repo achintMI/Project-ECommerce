@@ -1,54 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
+
+    <!--<TextView-->
+    <!--android:id="@+id/logo"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Easy Buy"-->
+    <!--android:textStyle="bold"-->
+    <!--android:fontFamily="cursive"-->
+    <!--android:focusable="true"-->
+    <!--android:focusableInTouchMode="true"-->
+    <!--android:layout_gravity="left"/>-->
+
+    <SearchView
+        android:id="@+id/search_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search Here" />
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/search"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="40dp"
+        android:visibility="gone" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="?attr/actionBarSize"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
-        android:background="#ef94c0d1">
+        android:layout_gravity="right"
+        android:background="#ef94c0d1"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Easy Buy"
-            android:textStyle="bold"
-            android:fontFamily="cursive"
-            android:focusable="true"
-            android:focusableInTouchMode="true"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <EditText
-                android:id="@+id/search_text"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/search_btn"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/ic_search" />
-            <Button
-                android:id="@+id/login_btn"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/ic_login"
-                android:layout_marginLeft="5dp"/>
-        </LinearLayout>
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/ic_login" />
     </android.support.v7.widget.Toolbar>
 
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="60dp"
         android:id="@+id/rv_product_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"></android.support.v7.widget.RecyclerView>
 </FrameLayout>

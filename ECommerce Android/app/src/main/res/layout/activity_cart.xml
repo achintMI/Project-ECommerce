@@ -13,13 +13,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:id="@+id/ll_title">
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -29,24 +27,19 @@
                     android:textSize="20dp"
                     android:textColor="@android:color/black"
                     android:id="@+id/tv_product_name"/>
-
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_title"
                 android:id="@+id/ll_img"
                 android:layout_margin="5dp">
-
                 <ImageView
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     android:src="@drawable/test"
                     android:id="@+id/imgv_product_image"/>
-
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -54,7 +47,6 @@
                 android:layout_alignParentRight="true"
                 android:gravity="center"
                 android:orientation="vertical">
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -62,28 +54,26 @@
                     android:text="Quantity"
                     android:textColor="#000000"
                     android:id="@+id/tv_quantity"/>
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="#2E8B57"
-                    android:gravity="center_vertical"
-                    android:text="Buy Now"
-                    android:textAlignment="center"
-                    android:textColor="#FFFFFF"
-                    android:id="@+id/bt_buy_now"/>
-
                 <EditText
-                    android:id="@+id/et_remove_quantity"
+                    android:id="@+id/et_add_quantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Quantity"
                     android:textAlignment="center"
                     android:inputType="text"/>
-
                 <Button
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:padding="2dp"
+                    android:background="#2E8B57"
+                    android:gravity="center_vertical"
+                    android:text="Add Quantity"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:id="@+id/bt_add_quantity"/>
+                <Button
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:background="#2E8B57"
@@ -92,7 +82,6 @@
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
                     android:id="@+id/bt_remove"/>
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -104,7 +93,6 @@
                     android:textSize="20dp"
                     android:id="@+id/tv_product_price"/>
             </LinearLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:id="@+id/v_base_border"
@@ -112,8 +100,6 @@
                 android:layout_below="@+id/ll_img"
                 android:layout_marginTop="10dp"
                 android:background="@android:color/black" />
-
         </RelativeLayout>
     </LinearLayout>
-
 </android.support.constraint.ConstraintLayout>

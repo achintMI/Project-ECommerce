@@ -41,7 +41,11 @@ public class Search{
 	@SerializedName("merchantName")
 	private String merchantName;
 
-	public String getMid() {
+    public Search(String s) {
+    	this.productName = s;
+    }
+
+    public String getMid() {
 		return mid;
 	}
 

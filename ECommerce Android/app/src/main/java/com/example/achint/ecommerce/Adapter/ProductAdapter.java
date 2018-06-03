@@ -40,30 +40,27 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        final ProductData product  = mProducts.get(position);
+        final ProductData product = mProducts.get(position);
         holder.productName.setText(product.getProductName());
         holder.productPrice.setText("Rs." + product.getProductPrice());
-        if(product.getUnitStock()<=0){
+        if (product.getUnitStock() <= 0) {
             holder.outOfStock.setVisibility(View.VISIBLE);
         }
         holder.productImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (product.getUnitStock() > 0) {
-                    Intent productDetails = new Intent(mContext, ProductActivity.class);
-                    productDetails.putExtra("productName", product.getProductName());
-                    productDetails.putExtra("productId", product.getProductId());
-                    productDetails.putExtra("productImage", product.getProductImageUrl());
-                    productDetails.putExtra("productPrice", product.getProductPrice());
-                    productDetails.putExtra("productMerchant", product.getProductMerchant());
-                    productDetails.putExtra("productDesc", product.getProductDescription());
-                    productDetails.putExtra("productRating", product.getMerchantRating());
-                    productDetails.putExtra("productQuantity", product.getUnitStock());
-                    productDetails.putExtra("merchantId", product.getMerchantId());
-                    mContext.startActivity(productDetails);
-                }else{
-                    Toast.makeText(mContext, "Out of Stock", Toast.LENGTH_LONG).show();
-                }
+                Intent productDetails = new Intent(mContext, ProductActivity.class);
+                productDetails.putExtra("productName", product.getProductName());
+                productDetails.putExtra("productId", product.getProductId());
+                productDetails.putExtra("productImage", product.getProductImageUrl());
+                productDetails.putExtra("productPrice", product.getProductPrice());
+                productDetails.putExtra("productMerchant", product.getProductMerchant());
+                productDetails.putExtra("productDesc", product.getProductDescription());
+                productDetails.putExtra("productRating", product.getMerchantRating());
+                productDetails.putExtra("productQuantity", product.getUnitStock());
+                productDetails.putExtra("merchantId", product.getMerchantId());
+                mContext.startActivity(productDetails);
+
             }
         });
 

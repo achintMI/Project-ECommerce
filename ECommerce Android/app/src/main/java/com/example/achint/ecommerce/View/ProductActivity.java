@@ -96,7 +96,7 @@ public class  ProductActivity extends AppCompatActivity {
         upButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                produtQuantity = findViewById(R.id.quant);
+                produtQuantity   = findViewById(R.id.quant);
                 produtQuantity.setText(String.valueOf(Integer.parseInt(produtQuantity.getText().toString())+1));
             }
         });
@@ -154,6 +154,10 @@ public class  ProductActivity extends AppCompatActivity {
                                         progressDialog.dismiss();
                                         alert.showAlertDialog(ProductActivity.this, "Congrats", "Order Placed", true);
                                         pQuantity = pQuantity - productVal;
+                                        produtQuantity   = findViewById(R.id.quant);
+                                        produtQuantity.setText(String.valueOf(pQuantity));
+                                        if(pQuantity==0)
+                                            outOfStock.setVisibility(View.VISIBLE);
                                     }
                                 }
 
@@ -259,6 +263,9 @@ public class  ProductActivity extends AppCompatActivity {
                     Glide.with(productImage).load(productDetails.getProductImageUrl()).into(productImage);
                     productPrice.setText("Rs."+productDetails.getProductPrice());
                     produtQuantity.setText(String.valueOf(productDetails.getUnitStock()));
+                    if(productDetails.getUnitStock()<=0){
+                        outOfStock.setVisibility(View.VISIBLE);
+                    }
                     product_name.setText(productDetails.getProductName());
                     //productIdentity.setText(productDetails.getProductId());
                     merchantName.setText(productDetails.getProductMerchant());

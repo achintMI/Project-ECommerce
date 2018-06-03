@@ -1,6 +1,8 @@
 package com.example.achint.ecommerce.Interface;
 
 import com.example.achint.ecommerce.Model.Product;
+import com.example.achint.ecommerce.Sessions.SessionManagement;
+import com.example.achint.ecommerce.View.CartActivity;
 
 import java.util.List;
 
@@ -22,5 +24,8 @@ public interface CartInterface {
 
     @GET("clear-cart")
     Call<Boolean> clearCart(@Query("userId") String userId);
+
+    @GET("rm-cart")
+    Call<Boolean> removeItemFromCart(@Query("productId") String productId, @Query("userId") String userId);
 
 }

@@ -56,54 +56,34 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final Product productDetails = productList.get(position);
         holder.tvProductName.setText(productDetails.getProductName());
-        holder.tvProductPrice.setText(String.valueOf(productDetails.getProductCost()*productDetails.getUnitStock()));
-        Glide.with(holder.imgvProductImage.getContext()).load(productDetails.getImageUrl()).into(holder.imgvProductImage);
+        holder.tvProductPrice.setText(String.valueOf(productDetails.getProductCost()*productDetails.getUnitStock()) );
+        holder.tvQuantity.setText("Quantity : "+productDetails.getUnitStock());
+        holder.etAddQuantity.setText(""+0);
+//        holder.etRemoveQuantity.setText(""+productDetails.getProductQuantity());
 
-        holder.tvQuantity.setText("Quantity:" + productDetails.getUnitStock());
-        holder.etRemoveQuantity.setText(String.valueOf(productDetails.getUnitStock()));
+        Glide.with(holder.imgvProductImage.getContext()).
+                load(productDetails.getImageUrl()).into(holder.imgvProductImage);
 
         holder.btRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int quantityToRemove = Integer.parseInt(holder.etRemoveQuantity.getText().toString());
-                iAdapterCommunicator.deleteItem(position, quantityToRemove);
+                int quantityToRemove = productDetails.getUnitStock();//Integer.parseInt(holder.etRemoveQuantity.getText().toString());
+
+                iAdapterCommunicator.deleteItem(position,quantityToRemove);
             }
         });
 
-        holder.btBuyNow.setOnClickListener(new View.OnClickListener() {
+        holder.btAddQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                session = new SessionManagement(mContext);
-                if(session.isLoggedIn()){
-                    HashMap<String, String> user = session.getUserDetails();
-                    String userEmail = user.get(SessionManagement.KEY_EMAIL);
-                    String userId = user.get(SessionManagement.KEY_ID);
-                    OrderInterface orderApi = MainController.getInstance().getClientForOrder().create(OrderInterface.class);
-                    final ProgressDialog progressDialog = new ProgressDialog(mContext);
-                    progressDialog.show();
-                    Call<OrderModel> call = orderApi.placeOrder(userEmail, productDetails.getImageUrl(), productDetails.getProductId(), userId, productDetails.getProductName(), productDetails.getProductCost()*productDetails.getUnitStock(), productDetails.getUnitStock());
-                    call.enqueue(new Callback<OrderModel>() {
-                        @Override
-                        public void onResponse(Call<OrderModel> call, Response<OrderModel> response) {
-                            if (200 == response.code()) {
-                                progressDialog.dismiss();
-                                Toast.makeText(mContext, "Success", Toast.LENGTH_SHORT).show();
-                                iAdapterCommunicator.deleteItem(position, productDetails.getUnitStock());
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<OrderModel> call, Throwable t) {
-                            progressDialog.dismiss();
-                            Toast.makeText(mContext, "Please try again.", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }else{
-                    Intent loginIntent = new Intent(mContext, LoginActivity.class);
-                    mContext.startActivity(loginIntent);
-                }
+                int quantityToAdd = Integer.parseInt(holder.etAddQuantity.getText().toString());
+                Product productToAdd = productList.get(holder.getAdapterPosition());
+                iAdapterCommunicator.updateProductQuantity(holder.getAdapterPosition(),
+                        productToAdd.getProductId(), quantityToAdd,productToAdd.getUserId(),
+                        productToAdd.getImageUrl(), productToAdd.getProductCost(),
+                        productToAdd.getProductName());
             }
         });
-
     }
 
     @Override
@@ -115,25 +95,27 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         TextView tvProductName;
         ImageView imgvProductImage;
         TextView tvProductPrice;
-        Button btBuyNow;
+        EditText etAddQuantity;
+        Button btAddQuantity;
         Button btRemove;
         TextView tvQuantity;
-        EditText etRemoveQuantity;
-
         public ViewHolder(View itemView) {
             super(itemView);
-            etRemoveQuantity = itemView.findViewById(R.id.et_remove_quantity);
-            tvQuantity = itemView.findViewById(R.id.tv_quantity);
             tvProductName = itemView.findViewById(R.id.tv_product_name);
             imgvProductImage = itemView.findViewById(R.id.imgv_product_image);
             tvProductPrice = itemView.findViewById(R.id.tv_product_price);
-            btBuyNow = itemView.findViewById(R.id.bt_buy_now);
+            btAddQuantity = itemView.findViewById(R.id.bt_add_quantity);
             btRemove = itemView.findViewById(R.id.bt_remove);
+            tvQuantity = itemView.findViewById(R.id.tv_quantity);
+            etAddQuantity = itemView.findViewById(R.id.et_add_quantity);
         }
     }
 
     public static interface IAdapterCommunicator {
         void deleteItem(int position, int quantityToRemove);
+        void updateProductQuantity(int position, String productId,  int unitStock,
+                                   String userId, String imageUrl,
+                                   double productCost,String productName);
 
     }
 }

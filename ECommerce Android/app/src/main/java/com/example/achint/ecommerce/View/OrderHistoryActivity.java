@@ -17,6 +17,7 @@ import com.example.achint.ecommerce.Sessions.SessionManagement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,6 +63,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements OrderAdap
                 public void onResponse(Call<OrderModel[]> call, Response<OrderModel[]> response) {
                     if (200 == response.code()) {
                         orderList.addAll(Arrays.asList(response.body()));
+                        Collections.reverse(orderList);
                         orderAdapter.notifyDataSetChanged();
                         progressDialog.dismiss();
                         Toast.makeText(OrderHistoryActivity.this, "Worked", Toast.LENGTH_SHORT).show();

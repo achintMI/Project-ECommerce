@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.achint.ecommerce.Adapter.CartAdapter;
@@ -36,14 +37,15 @@ import static java.lang.Math.abs;
 public class CartActivity extends AppCompatActivity implements CartAdapter.IAdapterCommunicator {
 
     private CartInterface mIProductApi;
+    private ProductInteface productApi;
     private RecyclerView mRecyclerView;
     private CartAdapter mCartAdapter;
     private List<Product> mProductList = new ArrayList<>();
     private Button btCheckout;
-    private ProductInteface productApi;
-    SessionManagement session;
-
+    //    private Button btAddQuantity;
+    private TextView tvCartTotal;
     private String userId;
+    SessionManagement session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,8 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.IAdap
         mIProductApi = MainController.getInstance().getClientForCart().create(CartInterface.class);
 
         listCartItems();
-
+        tvCartTotal = findViewById(R.id.tv_cart_total);
+        cartTotal();
         btCheckout = findViewById(R.id.bt_checkout);
         productApi = MainController.getInstance().getClientForProducts().create(ProductInteface.class);
         btCheckout.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +85,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.IAdap
                                                 mProductList.get(finalProductCounter).getProductId(),
                                                 mProductList.get(finalProductCounter).getUnitStock(),
                                                 mProductList.get(finalProductCounter).getProductCost());
+                                        removeItemFromCart(mProductList.get(finalProductCounter).getProductId());
                                     }
                                 }
                             }
@@ -93,23 +97,26 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.IAdap
                             }
 
                         });
-
                     }
                 }
-                if (mProductList.size() == 0) {
-                    Toast.makeText(CartActivity.this, "Your Cart Is Empty", Toast.LENGTH_LONG).show();
-                } else {
-                    clearCart();
-                }
+
             }
         });
 
     }
 
-    public void clearCart() {
+    public void cartTotal() {
+        int totalCost = 0;
+        for(Product cartProducts : mProductList) {
+            totalCost += (cartProducts.getProductCost()*cartProducts.getUnitStock());
+        }
+        tvCartTotal.setText(String.valueOf(totalCost));
+    }
+
+    public void removeItemFromCart(String productId) {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.show();
-        Call<Boolean> call = mIProductApi.clearCart(userId);
+        Call<Boolean> call = mIProductApi.removeItemFromCart(productId, userId);
         call.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
@@ -144,7 +151,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.IAdap
                 if (response.code() == 200) {
                     mProductList.addAll(Arrays.asList(response.body()));
                     mCartAdapter.notifyDataSetChanged();
-                    Toast.makeText(CartActivity.this, "Removed from Cart", Toast.LENGTH_LONG).show();
+                    cartTotal();
                     progressDialog.dismiss();
                 }
             }
@@ -173,6 +180,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.IAdap
             mProductList.remove(position);
             mCartAdapter.notifyItemRemoved(position);
             mCartAdapter.notifyDataSetChanged();
+            cartTotal();
         } else {
             int remainingQuantity = abs(quantityToRemove - product.getUnitStock());
 
@@ -191,7 +199,6 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.IAdap
                 progressDialog.dismiss();
                 if (response.code() == 200 && response.body() == true) {
                     Toast.makeText(CartActivity.this, "Successfully removed product from Cart", Toast.LENGTH_LONG).show();
-
                     if (mProductList.size() == 0) {
                         Toast.makeText(CartActivity.this, "Your Cart Is Empty", Toast.LENGTH_LONG).show();
                     }
@@ -235,5 +242,47 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.IAdap
             Intent loginIntent = new Intent(CartActivity.this, LoginActivity.class);
             CartActivity.this.startActivity(loginIntent);
         }
+    }
+
+    public void updateProductQuantity(final int position, final String productId,
+                                      final int unitStock, final String userId,
+                                      final String imageUrl, final double productCost,
+                                      final String productName)
+    {
+        final ProgressDialog progressDialog = new ProgressDialog(CartActivity.this);
+        progressDialog.show();
+
+        Call<Boolean> callCartService = mIProductApi.addToCart(productId,
+                unitStock,userId,imageUrl,
+                productCost,productName);
+
+        callCartService.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                progressDialog.dismiss();
+
+                if (response.code() == 200 && response.body()) {
+                    Toast.makeText(CartActivity.this, "Successfully Added " +
+                            "product to Cart", Toast.LENGTH_LONG).show();
+
+                    mProductList.get(position).setUnitStock((mProductList.get(position).getUnitStock())+unitStock);
+                    mCartAdapter.notifyItemChanged(position);
+                    mCartAdapter.notifyDataSetChanged();
+                    cartTotal();
+                }
+                else
+                {
+                    Toast.makeText(CartActivity.this,"Received Different " +
+                            "Response Code",Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(CartActivity.this,"Failed to add " +
+                        "product to Cart ", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
